@@ -1,0 +1,72 @@
+/* Compilateur g++ (linux)
+
+g++ -Wall // affiche tous les warnings
+g++ -ansi // suivre les normes universals "ansi"
+    -ansi -pedantic // suivre plus strict 
+    -O0 \ (pas d'optimisation)
+    ...   > optimisateur de code
+    -O2  / (forte optimiation)
+    -O3 /
+
+(mode developement): g++ -Wall -ansi -O0 -g
+(mode release): g++ -wall -ansi - O3 
+(phase préprocesseur): g++ -E  
+gbd = debugeur
+valgrid = analyse les fuites de mémoires
+
+*/
+
+/* pipeline
+class fichier 
+    private :
+        nom de fichier
+        table d'adresse des sequenceX /fasta /fastQ
+        // memoire dynamique
+            //desallocation de mémoire
+
+    public:
+        __constructeur__()
+            surcharge operator=()
+            delete ()
+        parseFile()
+        getsequence()
+        getNbSequence()
+        checkFormat()
+
+
+class sequenceX {  //(virtual pure)
+    
+    private :
+        type
+        header
+        vérifier le format
+        taille
+        taux GC
+        {facultatif} séquence : class string
+    
+    public:
+        getlength()
+        gettype()
+        getGCcontent()
+        (virtual pure) getHeader()
+        (virtual pure) getsequence() // en lecture
+        
+
+class seqFasta "extend" sequenceX {
+    public:
+        getheader()
+        getSequence()
+    }
+
+
+class seqFastQ "extend" sequenceX {
+    public:
+        etheader()
+        getSequence()
+        getQuality()
+    }
+
+}
+
+};
+*/
