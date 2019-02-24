@@ -3,7 +3,7 @@
 #SOURCE = 
 
 main.o : main.cpp calculator.h Makefile
-	g++ main.cpp -g
+	g++ main.cpp -o calculatrice
 
 clean : #Makefile
 	rm -f *.o

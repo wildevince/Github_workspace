@@ -2,7 +2,7 @@
 #define __FXF_H__
 
 #include <ostream>
-#include "FastXSeq"
+//#include "FastXSeq.h" 
 
 class FastXFile {
     private:
@@ -37,5 +37,7 @@ class FastXFile {
 };
 
 ostream &operator<<(ostream &os, const FastXFile &f);
+const char* myStrDup(const char* s);
+bool ifspace(char c, bool .........);
 
 #endif

@@ -1,17 +1,24 @@
 #include <iostream>
 #include "calculator.h"
 
-int Calculator::calculate(int x, int y, char oper) {
-            switch (oper)   {
-            case '+': return (x+y);
-            case '-' : return ( (x>=y)? x-y: y-x );
-            case '*' : return (x*y);
-            case '/' : return (x/y);
-            default: return (0);    }
-        }
+int Calculator::calculate(int x, int y, char oper)
+{
+    switch (oper)
+    {
+    case '+':
+        return (x + y);
+    case '-':
+        return ((x >= y) ? x - y : y - x);
+    case '*':
+        return (x * y);
+    case '/':
+        return (x / y);
+    default:
+        return (0);
+    }
+}
 
-
-using namespace std ;
+using namespace std;
 
 int main()
 {
@@ -19,9 +26,9 @@ int main()
     int y = 20;
     char oper;
     cout << "Donner le calcul :  x ? y " << endl;
-    cin >> c >> oper >> y ;
+    cin >> c >> oper >> y;
     Calculator cal;
-    int result = cal.calculate(c,y,oper);
+    int result = cal.calculate(c, y, oper);
     cout << "le resultat est " << result << endl;
     return 0;
 }
