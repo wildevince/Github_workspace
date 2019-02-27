@@ -1,8 +1,14 @@
 #include "FastXFile.h"
+//#include <iostream> 
+#include <fstream>
+#include <cstring>
+
+
+using namespace std;
 
 // fonctions locales
 const char* myStrDup(const char* s){
-    const char* res = NULL;
+    char* res = NULL;
     if (s) {
         size_t n = strlen(s) +1;
         res = new char[n];
@@ -14,6 +20,10 @@ ostream &operator<<(ostream &os, const FastXFile &f){
     f.tostream(os);
     return os; }
 
+bool ifspace(char c) {
+ return true;
+}
+
 //____//____//____/ FastaXFile /____//____//____//
 
 // ____ constructor ____ //
@@ -23,7 +33,7 @@ FastXFile::FastXFile( const char* f) :
 
 // ____ constructor par copie ____ //
 FastXFile::FastXFile( const FastXFile &f ) :
-    fileName(nyStrDup(f.fileName)), 
+    fileName(myStrDup(f.fileName)), 
     pos( f.pos ? new size_t[f.nb_sequence] : NULL),
     nb_sequence(f.nb_sequence)
     { for(size_t i = 0; i < nb_sequence; ++i)
@@ -39,6 +49,7 @@ FastXFile::~FastXFile() {
     }
 }
 
+// ____ operator ____ //
 FastXFile &FastXFile::operator= (const FastXFile &f) {
     if (this != &f) {
         if (fileName) { 
@@ -52,7 +63,7 @@ FastXFile &FastXFile::operator= (const FastXFile &f) {
             }
             pos = ( f.pos ? new size_t[f.nb_sequence] : NULL);
         }
-        fileName = nyStrDup(f.fileName) ;
+        fileName = myStrDup(f.fileName) ;
         nb_sequence = (f.nb_sequence);
         for(size_t i = 0; i < nb_sequence; ++i)
             {
@@ -62,23 +73,33 @@ FastXFile &FastXFile::operator= (const FastXFile &f) {
     return *this;
 }
 
+
+
+
+
 //____/ getters /____//
-const char* FastxFile::getFileName() const {
+char* FastXFile::getFileName() const {
     return fileName;}
 
-size_t FastxFile::getNbSequence() const { 
+size_t FastXFile::getNbSequence() const { 
     return nb_sequence;}
 
 
 //____/ flux sortant /____//
-void FastxFile::toStream(ostream &os) const {
+void FastXFile::toStream(ostream &os) const {
     os << "File: " << (fileName? fileName : "<no file>") << endl;
     os << "Nb sequence" << nb_sequence << endl;
     // getsequence ?
+    // return os;
 }
 
+ostream &operator<<( ostream &os, const FastXFile *f) {
+    f.toStream(os);
+    return os;} 
+
+
 //___/ setters /____//
-void FastxFile::setFileName(const char* f) {
+void FastXFile::setFileName(const char* f) {
     if (fileName) {
         delete[] fileName;}
     if (pos) {
@@ -100,7 +121,7 @@ void FastXFile::parse() {
     //
     // recherche du premier caractere
     char c = '\n'
-    while( (ifs.good() ) && (ifspace(ifs.peek() )) {
+    while( (ifs) && (ifspace(ifs.peek() )) {
         // ici tant que; no error dans le flux 
         // && si le prochain charactere est un espace
         c = ifs.get();}
@@ -117,7 +138,7 @@ void FastXFile::parse() {
         throw "erreur doumkumpf !"}
     // now: on sait que le premier caracter est bien '<' ou ';' ou '@'
     // 
-        if ( ifs.peek == '@') { 
+        if ( ifs.peek() == '@') { 
             //
             //  tp2: FastaQ
             //
