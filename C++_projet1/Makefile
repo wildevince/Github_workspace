@@ -1,9 +1,22 @@
-#Prgm = .\\C++_projet1\\main.cpp
-#Cxx = g++
-#SOURCE = 
+## Complilation
+Cxx = g++
+FLAGS = -Wall -ansi -pedantic -O0 -g
+#LD_flags = 
+#SUFFIXES : .cpp .h .o
 
-main.o : main.cpp calculator.h Makefile
-	g++ main.cpp -o calculatrice
+Prgm = albanrithmetic
+SOURCE = FastXFile.cpp 
+HEADERS = FastXFile.h
+THIS = Makefile
+
+#main.o : main.cpp calculator.h Makefile
+#	g++ main.cpp -o calculatrice
+
+FastXFile.o : FastXFile.cpp $(THIS) FastXFile.h
+	$(Cxx) -c $(FLAGS) $<
+
+(Prgm) : $(SOURCE:.cpp=.o)
+	$(Cxx) $(FLAGS) $^ -o $@
 
 clean : #Makefile
 	rm -f *.o
