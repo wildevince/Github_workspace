@@ -7,8 +7,8 @@
 class FastXFile {
     private:
         char*  fileName;
-        std::size_t *pos; 
-        std::size_t nb_sequence;
+        size_t *pos; 
+        size_t nb_sequence;
         //table des sequenceX /fasta /fastQ
         void parse();
 
@@ -23,7 +23,7 @@ class FastXFile {
         //FastXSeq operator[](size_t i) const; // getSequence
 
         //accesseur en lecture  getters
-        std::size_t getNbSequence() const ;
+        size_t getNbSequence() const ;
         char* getFileName() const;
         //FastXSeq getSequence(size_t i) const;
 
@@ -38,6 +38,6 @@ class FastXFile {
 
 ostream &operator<<(ostream &os, const FastXFile &f);
 const char* myStrDup(const char* s);
-bool ifspace(char c) ; // , bool newline) ;
+bool ifspace(char c , bool newchar) ; // , bool newline) ;
 
 #endif
