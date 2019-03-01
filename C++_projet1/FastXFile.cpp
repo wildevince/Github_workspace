@@ -7,7 +7,7 @@
 using namespace std;
 
 // fonctions locales
-const char *myStrDup(const char *s)
+char *myStrDup(char *s)
 {
     char *res = NULL;
     if (s)
@@ -36,7 +36,7 @@ bool ifspace(char c)
 //____//____//____/ FastaXFile /____//____//____//
 
 // ____ constructor ____ //
-FastXFile::FastXFile(const char *f) : fileName(NULL), pos(NULL), nb_sequence(0)
+FastXFile::FastXFile(char *f) : fileName(NULL), pos(NULL), nb_sequence(0)
 {
     setFileName(f);
 }
@@ -46,22 +46,22 @@ FastXFile::FastXFile(const FastXFile &f) : fileName(myStrDup(f.fileName)),
                                            pos(f.pos ? new size_t[f.nb_sequence] : NULL),
                                            nb_sequence(f.nb_sequence)
 {
-    for (size_t i = 0; i < nb_sequence; ++i)
+    for (size_t i = 0; i < this->nb_sequence; ++i)
     {
-        pos[i] = f.pos[i];
+        this->pos[i] = f.pos[i];
     }
 }
 
 // ____ destructeur ____ //
 FastXFile::~FastXFile()
 {
-    if (fileName)
+    if (this->fileName)
     {
-        delete[] *fileName;
+        delete[] this->fileName;
     }
-    if (pos)
+    if (this->pos)
     {
-        delete[] *pos;
+        delete[] this->pos;
     }
 }
 
@@ -70,25 +70,25 @@ FastXFile &FastXFile::operator=(const FastXFile &f)
 {
     if (this != &f)
     {
-        if (fileName)
+        if (this->fileName)
         {
-            delete[] fileName;
-            fileName = NULL;
+            delete[] this->fileName;
+            this->fileName = NULL;
         }
-        if (f.nb_sequence != nb_sequence)
+        if (f.nb_sequence != this->nb_sequence)
         {
-            if (pos)
+            if (this->pos)
             {
-                delete[] pos;
-                pos = NULL;
+                delete[] this->pos;
+                this->pos = NULL;
             }
-            pos = (f.pos ? new size_t[f.nb_sequence] : NULL);
+            this->pos = (f.pos ? new size_t[f.nb_sequence] : NULL);
         }
-        fileName = myStrDup(f.fileName);
-        nb_sequence = (f.nb_sequence);
-        for (size_t i = 0; i < nb_sequence; ++i)
+        this->fileName = myStrDup(f.fileName);
+        this->nb_sequence = (f.nb_sequence);
+        for (size_t i = 0; i < this->nb_sequence; ++i)
         {
-            pos[i] = f.pos[i];
+            this->pos[i] = f.pos[i];
         }
     }
     return *this;
@@ -97,19 +97,19 @@ FastXFile &FastXFile::operator=(const FastXFile &f)
 //____/ getters /____//
 char *FastXFile::getFileName() const
 {
-    return fileName;
+    return this->fileName;
 }
 
 size_t FastXFile::getNbSequence() const
 {
-    return nb_sequence;
+    return this->nb_sequence;
 }
 
 //____/ flux sortant /____//
 void FastXFile::toStream(ostream &os) const
 {
-    os << "File: " << (fileName ? fileName : "<no file>") << endl;
-    os << "Nb sequence" << nb_sequence << endl;
+    os << "File: " << (this->fileName ? this->fileName : "<no file>") << endl;
+    os << "Nb sequence" << this->nb_sequence << endl;
     // getsequence ?
     // return os;
 }
@@ -121,20 +121,20 @@ ostream &operator<<(ostream &os, const FastXFile *f)
 }
 
 //___/ setters /____//
-void FastXFile::setFileName(const char *f)
+void FastXFile::setFileName(char* f)
 {
-    if (fileName)
+    if (this->fileName)
     {
-        delete[] fileName;
+        delete[] this->fileName;
     }
-    if (pos)
+    if (this->pos)
     {
-        delete[] pos;
-        pos = NULL;
-        nb_sequence = 0;
+        delete[] this->pos;
+        this->pos = NULL;
+        this->nb_sequence = 0;
     }
-    fileName = myStrDup(f);
-    if (fileName)
+    this->fileName = myStrDup(f);
+    if (this->fileName)
     {
         parse();
     }
@@ -144,7 +144,7 @@ void FastXFile::setFileName(const char *f)
 void FastXFile::parse()
 {
     //
-    ifstream ifs(fileName); // construit le flux depuis this
+    ifstream ifs(this->fileName); // construit le flux depuis this
     //
     if (!ifs.good())
     {
@@ -189,11 +189,11 @@ void FastXFile::parse()
             {
                 string s;
                 getline(ifs, s);
-                nb_sequence += ((s[0] == '>') || (s[0] == ';'));
+                this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
             } while (ifs); // compte le nombre de séquence
-            pos = new size_t[nb_sequence];
+            this->pos = new size_t[this->nb_sequence];
             // creation du tableau
-            nb_sequence = 0;
+            this->nb_sequence = 0;
             ifs.clear();            // reset le flag/"marque-page" ifs
             ifs.seekg(0);           // reprend à la position 0
             size_t p = ifs.tellg(); // donne la position actuelle
@@ -203,7 +203,7 @@ void FastXFile::parse()
                 getline(ifs, s);
                 if ((s[0] == '>') || (s[0] == ';'))
                 {
-                    pos[nb_sequence++] = p;
+                    this->pos[this->nb_sequence++] = p;
                 }
                 // stock la nouvelle position
                 // puis encrémente nb_sequence

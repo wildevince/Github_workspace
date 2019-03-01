@@ -1,34 +1,42 @@
 #include <iostream>
-#include "calculator.h"
-
-int Calculator::calculate(int x, int y, char oper)
-{
-    switch (oper)
-    {
-    case '+':
-        return (x + y);
-    case '-':
-        return ((x >= y) ? x - y : y - x);
-    case '*':
-        return (x * y);
-    case '/':
-        return (x / y);
-    default:
-        return (0);
-    }
-}
+#include <string>
+#include <algorithm>
 
 using namespace std;
 
-int main()
-{
-    int c = 10;
-    int y = 20;
-    char oper;
-    cout << "Donner le calcul :  x ? y " << endl;
-    cin >> c >> oper >> y;
-    Calculator cal;
-    int result = cal.calculate(c, y, oper);
-    cout << "le resultat est " << result << endl;
+int main( int argc, char** argv) {
+
+    if (argc != 2 ) {
+        cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
+        return 1; 
+    }
+    string s(argv[1]); 
+    cout << "chaine à vérifier: ' " << s << "'"<< endl;
+    
+    vector<size_t> SA(s.length() );
+    //iota (SA.begin(), SA.end(), 0) ; 
+    for(size_t i = 0; i < s.length() ; ++i) {
+        SA[i] = i; }
+    
+    cout << "SA = [";
+    for (size_t i = 0; i <s.size() ; ++i) {
+        cout << (i?", ":"") << SA[i];
+    }
+    cout << "]" <<endl;
+.
+.
+.
+.
+.
+.
+.
+.
+.
     return 0;
 }
+ /*
+ g++ -Wall -ansi -pedantic ./main.cpp -o runtest
+
+./runtest 
+ */
+
