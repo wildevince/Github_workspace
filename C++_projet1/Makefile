@@ -15,14 +15,19 @@ THIS = Makefile
 #main.o : main.cpp calculator.h Makefile
 #	g++ main.cpp -o calculatrice
 
-FastXFile.o : $(SOURCE) $(THIS) $(HEADERS)
+all : $(Prgm)
+
+FastXFile.o : FastXFile.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
-(Prgm) : $(SOURCE:.cpp=.o)
+main.o : main.cpp FastXFile.cpp $(THIS) $(HEADERS)
+	$(Cxx) -c $(FLAGS) $<
+
+$(Prgm) : $(SOURCE:.cpp=.o)
 	$(Cxx) $(FLAGS) $^ -o $@
 
 clean : #Makefile
 	rm -f *.o
 	rm -f *~
 
-#g++ 
+#g++

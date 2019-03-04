@@ -30,7 +30,7 @@ class endodedSeq {
         // encodedSeq operator() (size_t start, siret_t l= (size_t) -1) const
         )
 
-}
+};
 
 std::ostream &operator<<(std::ostream &os, const encodedSeq &es);
 

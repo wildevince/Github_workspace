@@ -14,17 +14,17 @@ int main( int argc, char** argv) {
         cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
         return 1; 
     }
-    string s(argv[1]); 
+    char* s = argv[1] ; 
     cout << "chaine à vérifier: ' " << s << "'"<< endl;
     
-    string param = "./myf.fasta";
+    char* param = "./myf.fasta";
 
     FastXFile myfasta (s);
     myfasta.setFileName(s);
     
     myfasta.toStream(cout); 
     cout << "Boujour Je m'appel Lylie" << endl;
-
+ 
 /*
 
     if (argc != 2 ) {

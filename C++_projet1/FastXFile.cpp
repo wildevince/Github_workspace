@@ -113,8 +113,8 @@ size_t FastXFile::getNbSequence() const
 //____/ flux sortant /____//
 void FastXFile::toStream(ostream &os) const
 {
-    os << "File: " << (this->fileName ? this->fileName : "<no file>") << endl;
-    os << "Nb sequence" << this->nb_sequence << endl;
+    os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
+    os << "Nb sequence : " << this->nb_sequence << endl;
     // getsequence ?
     // return os;
 }
@@ -153,8 +153,9 @@ void FastXFile::parse()
     //
     if (!ifs.good())
     {
-        throw ; //"Unable to open this file";
-        cerr << "Unable to open this file"<< endl;
+        cout << "### Unable to open this file 1###"<< endl;
+        throw "### Unable to open this file 2###"; //"Unable to open this file";
+        cout << "### Unable to open this file 3###"<< endl;
     }
     //
     // recherche du premier caractere
@@ -162,7 +163,8 @@ void FastXFile::parse()
     while( (ifs) && ifspace(ifs.peek()) ) {
         // ici tant que; no error dans le flux
         // && si le prochain charactere est un espace
-        cerr << "le char de la boucle while est: "<<  c << endl;
+        cout << "### le char de la boucle while est: 'couille'"<<  c  ;
+        cout << " ###" << endl;
         c = ifs.get();}
         // ici ifs est un flag ("marque-page" dans notre flux-fichier)
     //
@@ -178,7 +180,7 @@ void FastXFile::parse()
         }
         if (c != '\n')
         { // on rencontre alors un char non prévu => error
-            throw "erreur doumkumpf !";
+            throw "erreur dummkopf !";
         }
         // now: on sait que le premier caracter est bien '<' ou ';' ou '@'
         //
