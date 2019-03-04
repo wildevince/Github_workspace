@@ -1,27 +1,27 @@
 #include "encoded_sequence.h"
 
 
-// _____ class encodedSeq ____ // // _____ class encodedSeq ____ // // _____ class encodedSeq ____ // 
+// _____ class EncodedSeq ____ // // _____ class EncodedSeq ____ // // _____ class EncodedSeq ____ // 
 
-ostream &operator<<(ostream &os, const endodedSeq &es) {
+ostream &operator<<(ostream &os, const EncodedSeq &es) {
     es.toStream(os);
     return os;
 }
 
 
-encodedSeq::encodedSeq(size_t n) : n(0), N(n? getByte(n)+1:0), t( N? new char[N]: NULL) {
+EncodedSeq::EncodedSeq(size_t n) : n(0), N(n? getByte(n)+1:0), t( N? new char[N]: NULL) {
 
 }
 
-encodedSeq::encodedSeq(const encodedSeq &es) : n(es.n), N(es.N) t(n? new char[N]:NULL) {
+EncodedSeq::EncodedSeq(const EncodedSeq &es) : n(es.n), N(es.N) t(n? new char[N]:NULL) {
     copy(es.t, es.t+N, t); 
 }
 
-encodedSeq::~encodedSeq() {
+EncodedSeq::~EncodedSeq() {
     clear();
 }
 
-encodedSeq &encodedSeq::operator=( const endodedSeq &es ) {
+EncodedSeq &EncodedSeq::operator=( const EncodedSeq &es ) {
     if (this != &es) {
         clear();
         n= es.n;
@@ -32,7 +32,7 @@ encodedSeq &encodedSeq::operator=( const endodedSeq &es ) {
     return *this;
 }
 
-void endodedSeq::clear() {
+void EncodedSeq::clear() {
     if (n) {
     delete[] t;
     t = NULL;
@@ -40,7 +40,7 @@ void endodedSeq::clear() {
     n = 0;
 }
 
-void endodedSeq::reserve(size_t n) {
+void EncodedSeq::reserve(size_t n) {
     size_t N = getByte(n) +1;
     if (N > this->N) {
         char* tab = new char[N];
@@ -51,11 +51,11 @@ void endodedSeq::reserve(size_t n) {
     }
 }
 
-static size_t encodedSeq::getByte(size_t i) {
+static size_t EncodedSeq::getByte(size_t i) {
     return (i? (i-1)>>2 : 0);
 }
 
-static size_t encodedSeq::getPosByte(size_t i = 0) {
+static size_t EncodedSeq::getPosByte(size_t i = 0) {
     return (i? (i-1)&3 : 0);
 }
 
@@ -73,7 +73,7 @@ char decode(char c) {
     return ((c==0)?'A': ((c==1)?'T': ((c==2)?'G': ((c==3)?'C')))); 
 }
 
-char encodedSeq::operator[](size_t i) const {
+char EncodedSeq::operator[](size_t i) const {
     if (i<n) {
         throw "out of range";
     }
@@ -83,7 +83,7 @@ char encodedSeq::operator[](size_t i) const {
     return decode(c&3);
 }
 
-void encodedSeq::setNucleotide(size_t i, char c){
+void EncodedSeq::setNucleotide(size_t i, char c){
     if (i > n ) {n = i;}
     reverve (i);
     char &B = this->t[getByte[i]]
@@ -92,12 +92,12 @@ void encodedSeq::setNucleotide(size_t i, char c){
     B |= (encode(c) << shift);
     }
 
-void encodedSeq::toStream(std::ostream &os) const {
+void EncodedSeq::toStream(std::ostream &os) const {
     for (size_t i = 1 ; i<= n ; ++i) {
     os << (*this)[i];}
 }
 
-encodedSeq &encodedSeq::operator+=(char c) {
+EncodedSeq &EncodedSeq::operator+= (char c) {
     reserve (++n);
     char &B = this->t[getByte[i]]
     size_t shift ((3-getPosByte(i))<<1);

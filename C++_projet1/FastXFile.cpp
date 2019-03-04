@@ -151,11 +151,20 @@ void FastXFile::parse()
     //
     ifstream ifs(this->fileName); // construit le flux depuis this
     //
+    
     if (!ifs.good())
     {
         cout << "### Unable to open this file 1###"<< endl;
         throw "### Unable to open this file 2###"; //"Unable to open this file";
         cout << "### Unable to open this file 3###"<< endl;
+    }
+    if (ifs) {
+        ifs.seekg(0,ios::end);
+        size_t sizefile = ifs.tellg();
+        if (sizefile == 0) {
+            cerr << "### fichier vide ###" << endl;
+            throw ;
+        }
     }
     //
     // recherche du premier caractere

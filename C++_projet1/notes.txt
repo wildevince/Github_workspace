@@ -8,7 +8,7 @@ g++ -ansi // suivre les normes universals "ansi"
     -O2  / (forte optimiation)
     -O3 /
 
-(mode developement): g++ -Wall -ansi -O0 -g
+(mode developement): g++ -Wall -ansi -pedantic -O0 -g
 (mode release): g++ -wall -ansi - O3 
 (phase préprocesseur): g++ -E  
 gbd = debugeur
@@ -39,9 +39,9 @@ class sequenceX {  //(virtual pure)
     private :
         type
         header
-        vérifier le format
-        taille
-        taux GC
+        //vérifier le format
+        //taille
+        //taux GC
         {facultatif} séquence : class string
     
     public:
