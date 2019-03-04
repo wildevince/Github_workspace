@@ -6,7 +6,7 @@ Norme = -ansi -pedantic
 #SUFFIXES : .cpp .h .o
 
 Prgm = albanrithmetic
-SOURCE = FastXFile.cpp 
+SOURCE = FastXFile.cpp main.cpp
 #source_bis = FastXFile.cpp
 HEADERS = FastXFile.h
 #header_bis = fastXFile.h
@@ -24,3 +24,5 @@ FastXFile.o : $(SOURCE) $(THIS) $(HEADERS)
 clean : #Makefile
 	rm -f *.o
 	rm -f *~
+
+#g++ 

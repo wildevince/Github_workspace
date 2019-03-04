@@ -1,5 +1,5 @@
 #include "FastXFile.h"
-#include <iostream>
+//#include <iostream>
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
@@ -30,7 +30,12 @@ ostream &operator<<(ostream &os, const FastXFile &f)
 
 bool ifspace(char c)
 {
-    return true;
+    if (c) {
+        return ( isspace(c)? true: false);
+    }
+    else {
+    return false;
+    }
 }
 
 //____//____//____/ FastaXFile /____//____//____//
@@ -116,7 +121,7 @@ void FastXFile::toStream(ostream &os) const
 
 ostream &operator<<(ostream &os, const FastXFile *f)
 {
-    f.toStream(os);
+    f->toStream(os);
     return os;
 }
 
@@ -153,10 +158,11 @@ void FastXFile::parse()
     }
     //
     // recherche du premier caractere
-    char c = '\n'
-    while( (ifs) && (ifspace(ifs.peek() )) {
+    char c = '\n';
+    while( (ifs) && ifspace(ifs.peek()) ) {
         // ici tant que; no error dans le flux
         // && si le prochain charactere est un espace
+        cerr << "le char de la boucle while est: "<<  c << endl;
         c = ifs.get();}
         // ici ifs est un flag ("marque-page" dans notre flux-fichier)
     //
@@ -172,7 +178,7 @@ void FastXFile::parse()
         }
         if (c != '\n')
         { // on rencontre alors un char non prévu => error
-            throw "erreur doumkumpf !"
+            throw "erreur doumkumpf !";
         }
         // now: on sait que le premier caracter est bien '<' ou ';' ou '@'
         //
@@ -210,5 +216,6 @@ void FastXFile::parse()
                 //
                 p = ifs.tellg(); // donne la nouvelle actuelle
             } while (ifs);
+        }
         }
 }

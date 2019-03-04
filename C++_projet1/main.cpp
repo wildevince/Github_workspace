@@ -1,10 +1,31 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <libgen.h>
+#include "FastXFile.h"
+//#include "FastXFile.cpp"
+
 
 using namespace std;
 
 int main( int argc, char** argv) {
+
+     if (argc != 2 ) {
+        cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
+        return 1; 
+    }
+    string s(argv[1]); 
+    cout << "chaine à vérifier: ' " << s << "'"<< endl;
+    
+    string param = "./myf.fasta";
+
+    FastXFile myfasta (s);
+    myfasta.setFileName(s);
+    
+    myfasta.toStream(cout); 
+    cout << "Boujour Je m'appel Lylie" << endl;
+
+/*
 
     if (argc != 2 ) {
         cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
@@ -31,7 +52,7 @@ int main( int argc, char** argv) {
 .
 .
 .
-.
+. */
     return 0;
 }
  /*

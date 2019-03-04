@@ -1,7 +1,7 @@
 #ifndef __FXF_H__
 #define __FXF_H__
 
-//#include <iostream>
+#include <iostream>
 //#include "FastXSeq.h" 
 
 class FastXFile {
@@ -14,7 +14,7 @@ class FastXFile {
 
     public:
         // constructor
-        FastXFile(const char* f = NULL);
+        FastXFile(char* f = NULL);
         FastXFile(const FastXFile &f); //constructor par copie
         //destuctor
         ~FastXFile();
@@ -28,16 +28,16 @@ class FastXFile {
         //FastXSeq getSequence(size_t i) const;
 
         //accesseur d'écriture  setters
-        void setFileName(const char* f); 
+        void setFileName(char* f); 
 
         // display par flux de sorti
-        void toStream(ostream &os) const;
+        void toStream(std::ostream &os) const;
 
         
 };
 
-ostream &operator<<(ostream &os, const FastXFile &f);
-const char* myStrDup(const char* s);
-bool ifspace(char c , bool newchar) ; // , bool newline) ;
+std::ostream &operator<<(std::ostream &os, const FastXFile &f);
+char* myStrDup(char* s);
+bool ifspace(char c ) ; // , bool newline) ;
 
 #endif
