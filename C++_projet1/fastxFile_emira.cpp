@@ -127,7 +127,7 @@ void FastXFile::setFileName(const char* f) {
 	}
 }
 
-//___/ methote privé /____//
+//___/ methote privÃ© /____//
 void FastXFile::parse() {
 	//
 	ifstream ifs(fileName);// construit le flux depuis this
@@ -151,7 +151,7 @@ void FastXFile::parse() {
 	if (ifs.good())
 	{ //on peut lire le fichier
 		if (c == '\n')
-		{ //le char précédent est un '\n'
+		{ //le char prÃ©cÃ©dent est un '\n'
 			c = ifs.peek(); //char suivant
 			if ((c == '>') || (c == ';') || (c == '@'))
 			{
@@ -160,7 +160,7 @@ void FastXFile::parse() {
 			} // alors okay^^
 		}
 		if (c != '\n')
-		{ // on rencontre alors un char non prévu => error
+		{ // on rencontre alors un char non prÃ©vu => error
 			throw ;
 		}
 		// now: on sait que le premier caracter est bien '<' ou ';' ou '@'
@@ -179,13 +179,13 @@ void FastXFile::parse() {
 				string s;
 				getline(ifs, s);
 				nb_sequence += ((s[0] == '>') || (s[0] == ';'));
-			} while (ifs); // compte le nombre de séquence
+			} while (ifs); // compte le nombre de sÃ©quence
 
 			pos = new size_t[nb_sequence];
 			// creation du tableau 
 			nb_sequence = 0;
 			ifs.clear(); // reset le flag/"marque-page" ifs
-			ifs.seekg(0); // reprend à la position 0
+			ifs.seekg(0); // reprend Ã  la position 0
 			size_t p = ifs.tellg(); // donne la position actuelle
 			do
 			{
@@ -196,7 +196,7 @@ void FastXFile::parse() {
 					pos[nb_sequence++] = p;
 				}
 				// stock la nouvelle position
-				// puis encrémente nb_sequence
+				// puis encrÃ©mente nb_sequence
 				//
 				p = ifs.tellg(); // donne la nouvelle actuelle
 			} while (ifs);
