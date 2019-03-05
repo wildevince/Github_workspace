@@ -8,10 +8,10 @@
 class FastXFile {
 private:
 	const char*  fileName;
-	size_t *pos; //Pointeur nombre e case sera égale au nombre de seq pointeur de pointeur
+	size_t *pos; //Pointeur nombre e case sera Ã©gale au nombre de seq pointeur de pointeur
 	size_t nb_sequence;
 	//table des sequenceX /fasta /fastQ
-	void parse(); // cotrole et maitrise de la méthode car elle crée les objets
+	void parse(); // cotrole et maitrise de la mÃ©thode car elle crÃ©e les objets
 
 public:
 	// constructor
@@ -26,9 +26,9 @@ public:
 	//accesseur en lecture  getters
 	size_t getNbSequence() const;
 	const char* getFileName() const;
-	FastXSeq getSequence(size_t i) const; //récupère une seq à une position donnée dans le tab
+	FastXSeq getSequence(size_t i) const; //rÃ©cupÃ¨re une seq Ã  une position donnÃ©e dans le tab
 
-	//accesseur d'écriture  setters
+	//accesseur d'Ã©criture  setters
 	void setFileName(const char* f);
 
 	// display par flux de sorti
