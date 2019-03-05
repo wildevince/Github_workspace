@@ -2,7 +2,7 @@
 #define __ECS_H__
 
 
-class EncodedSeq {
+class endodedSeq {
     private:
         size_t n, N;
         char* t;
@@ -10,29 +10,31 @@ class EncodedSeq {
         static size_t getPosByte(size_t i = 0);
 
     public:
-        EncodedSeq();
-        EncodedSeq(size_t n = 0);
-        EncodedSeq(const EncodedSeq &es);
-        ~EncodedSeq();
-        EncodedSeq &operator=( const EncodedSeq &es );
-
+        encodedSeq();
+        encodedSeq(size_t n = 0);
+        encodedSeq(const encodedSeq &es);
+        ~encodedSeq();
+        encodedSeq &operator=( const endodedSeq &es );
+        void toStream(std::ostream &os) const;
+        
         char getNucleotide(size_t i) const;
         void setNucleotide(size_t i, char c); 
+        //
+        // methode apparentée à string 
         void clear();
         void reserve(size_t  n);
-        void toStream(std::ostream &os) const;
         char operator[](size_t i) const;
-        EncodedSeq &operator+= (char c);
+        encodedSeq &operator+= (char c);
         
-        // revers_ccplmnt
+        encodedSeq& revers_ccplmnt(const encodedSeq &es);
         // operator (ou exclusif)
-        // EncodedSeq subseq( size_t start, siret_t l= (size_t) -1) const
-        // EncodedSeq operator() (size_t start, siret_t l= (size_t) -1) const
+        // encodedSeq subseq( size_t start, siret_t l= (size_t) -1) const
+        // encodedSeq operator() (size_t start, siret_t l= (size_t) -1) const
         )
 
-};
+}
 
-std::ostream &operator<<(std::ostream &os, const EncodedSeq &es);
+std::ostream &operator<<(std::ostream &os, const encodedSeq &es);
 
 /* size_t graine = (getpid()*time(NULL)); // pour le debogger
 // srand48(getpid()*time(NULL)); */
