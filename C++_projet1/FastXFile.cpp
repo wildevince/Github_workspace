@@ -1,5 +1,5 @@
 #include "FastXFile.h"
-//#include <iostream>
+#include "FastXSeq.h"
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
@@ -41,7 +41,11 @@ bool ifspace(char c) // if char blanc
 //____//____//____/ FastaXFile /____//____//____//
 
 // ____ constructor ____ //
-FastXFile::FastXFile(char *f) : fileName(NULL), pos(NULL), nb_sequence(0)
+FastXFile::FastXFile(char *f) : 
+    fileName(NULL), 
+    pos(NULL), 
+    //list_seq(NULL), 
+    nb_sequence(0)
 {
     setFileName(f);
 }
@@ -49,11 +53,13 @@ FastXFile::FastXFile(char *f) : fileName(NULL), pos(NULL), nb_sequence(0)
 // ____ constructor par copie ____ //
 FastXFile::FastXFile(const FastXFile &f) : fileName(myStrDup(f.fileName)),
                                            pos(f.pos ? new size_t[f.nb_sequence] : NULL),
+                                           //list_seq(f.list_seq? new FastXSeq[f.nb_sequence] : NULL),
                                            nb_sequence(f.nb_sequence)
 {
     for (size_t i = 0; i < this->nb_sequence; ++i)
     {
         this->pos[i] = f.pos[i];
+        //list_seq[i] = list_seq[i];
     }
 }
 
@@ -68,6 +74,10 @@ FastXFile::~FastXFile()
     {
         delete[] this->pos;
     }
+    /*if (list_seq)
+    {
+        delete[] list_seq;
+    }*/
 }
 
 // ____ operator ____ //
@@ -88,16 +98,33 @@ FastXFile &FastXFile::operator=(const FastXFile &f)
                 this->pos = NULL;
             }
             this->pos = (f.pos ? new size_t[f.nb_sequence] : NULL);
+            /*if (this->list_seq)
+            {
+                delete[] this->list_seq;
+                this->list_seq = NULL;
+            }
+            this->list_seq = (f.list_seq ? new FastXSeq[f.nb_sequence] : NULL);*/
         }
         this->fileName = myStrDup(f.fileName);
         this->nb_sequence = (f.nb_sequence);
         for (size_t i = 0; i < this->nb_sequence; ++i)
         {
             this->pos[i] = f.pos[i];
+            //list_seq[i] = list_seq[i];
         }
     }
     return *this;
 }
+/*
+FastXSeq& FastXFile::operator[](size_t i)
+{
+    if (i >= nb_sequence ){
+        cerr << "out of range" << endl;
+        throw "out of range" ;
+    }
+    return this->list_seq[i];
+}*/
+
 
 //____/ getters /____//
 char* FastXFile::getFileName() const
@@ -117,9 +144,10 @@ void FastXFile::toStream(ostream &os) const
     os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
     os << "Nb sequence : " << this->nb_sequence << endl;
     os << "positions des sequences :  " << endl;
-    for (size_t i = 0; i < nb_sequence ; ++i) {
-        os << pos[i] << endl;
-    }
+    /*for (size_t i = 0; i < nb_sequence ; ++i) 
+    {
+        this->list_seq[i].toStream(os) ;
+    }*/
 }
 
 
@@ -212,6 +240,7 @@ void FastXFile::parse()
                 cout << "nb_seq + 1 = " << nb_sequence  << endl;
             } while (ifs); // compte le nombre de séquence
             this->pos = new size_t[this->nb_sequence];
+            //this->list_seq = new FastXSeq[nb_sequence];
             // creation du tableau
             this->nb_sequence = 0;
             cout << " Rock'N Roll" << endl;
@@ -220,11 +249,14 @@ void FastXFile::parse()
             size_t p = ifs.tellg(); // donne la position actuelle
             do
             {
+                FastXSeq xseq;
                 string s;
                 getline(ifs, s);
                 if ((s[0] == '>') || (s[0] == ';'))
                 {
                     this->pos[this->nb_sequence++] = p;
+                    xseq.parseq(ifs,p);
+                    //this->list_seq[this->nb_sequence++] = xseq;
                     cout << " 1UP " << endl;
                 }
                 // stock la nouvelle position

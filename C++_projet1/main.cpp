@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <libgen.h>
 #include "FastXFile.h"
-//#include "FastXSeq.h"
+#include "FastXSeq.h"
 
 
 using namespace std;

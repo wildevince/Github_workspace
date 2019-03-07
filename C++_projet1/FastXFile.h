@@ -2,15 +2,17 @@
 #define __FXF_H__
 
 #include <iostream>
-//#include "FastXSeq.h" 
+#include "FastXSeq.h" 
 
 class FastXFile {
     private:
         char*  fileName;
         size_t *pos; 
+        //FastXSeq *list_seq;
         size_t nb_sequence;
         //table des XSeq /fasta /fastQ
         void parse();
+        //FastXSeq::FastXSeq XSeq;
 
     public:
         // constructor
@@ -20,7 +22,7 @@ class FastXFile {
         ~FastXFile();
         // operator=
         FastXFile& operator=(const FastXFile &f); 
-        //FastXSeq operator[](size_t i) const; // getSequence
+        //FastXSeq& operator[](size_t i) ; // getSequence
 
         //accesseur en lecture  getters
         size_t getNbSequence() const ;
