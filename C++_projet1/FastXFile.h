@@ -9,7 +9,7 @@ class FastXFile {
         char*  fileName;
         size_t *pos; 
         size_t nb_sequence;
-        //table des sequenceX /fasta /fastQ
+        //table des XSeq /fasta /fastQ
         void parse();
 
     public:

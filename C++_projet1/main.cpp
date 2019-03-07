@@ -3,10 +3,11 @@
 #include <algorithm>
 #include <libgen.h>
 #include "FastXFile.h"
-//#include "FastXFile.cpp"
+//#include "FastXSeq.h"
 
 
 using namespace std;
+
 
 int main( int argc, char** argv) {
 
@@ -17,16 +18,16 @@ int main( int argc, char** argv) {
     char* s = argv[1] ; 
     cout << "chaine à vérifier: ' " << s << "'"<< endl;
     
-    char* param = "./myf.fasta";
-
-    FastXFile myfasta (s);
+    // conversion string to char*
+    //char* filename = &s;     
+    
+    FastXFile myfasta(s);
     myfasta.setFileName(s);
     
     myfasta.toStream(cout); 
     cout << "Boujour Je m'appel Lylie" << endl;
  
 /*
-
     if (argc != 2 ) {
         cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
         return 1; 
@@ -57,7 +58,5 @@ int main( int argc, char** argv) {
 }
  /*
  g++ -Wall -ansi -pedantic ./main.cpp -o runtest
-
 ./runtest 
  */
-

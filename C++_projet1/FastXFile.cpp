@@ -7,7 +7,7 @@
 using namespace std;
 
 // fonctions locales
-char *myStrDup(char *s)
+char *myStrDup(char *s) //s = &f.fileName
 {
     char *res = NULL;
     if (s)
@@ -22,16 +22,16 @@ char *myStrDup(char *s)
     return res;
 }
 
-ostream &operator<<(ostream &os, const FastXFile &f)
+ostream& operator<<(ostream &os, const FastXFile &f)
 {
     f.toStream(os);
     return os;
 }
 
-bool ifspace(char c)
+bool ifspace(char c) // if char blanc
 {
-    if (c) {
-        return ( isspace(c)? true: false);
+    if (c) { // le char existe 
+        return ( isspace(c)? true: false); 
     }
     else {
     return false;
@@ -100,7 +100,7 @@ FastXFile &FastXFile::operator=(const FastXFile &f)
 }
 
 //____/ getters /____//
-char *FastXFile::getFileName() const
+char* FastXFile::getFileName() const
 {
     return this->fileName;
 }
@@ -113,17 +113,15 @@ size_t FastXFile::getNbSequence() const
 //____/ flux sortant /____//
 void FastXFile::toStream(ostream &os) const
 {
+    os << "Coucou toStream Hibou !!! " << endl;
     os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
     os << "Nb sequence : " << this->nb_sequence << endl;
-    // getsequence ?
-    // return os;
+    os << "positions des sequences :  " << endl;
+    for (size_t i = 0; i < nb_sequence ; ++i) {
+        os << pos[i] << endl;
+    }
 }
 
-ostream &operator<<(ostream &os, const FastXFile *f)
-{
-    f->toStream(os);
-    return os;
-}
 
 //___/ setters /____//
 void FastXFile::setFileName(char* f)
@@ -152,19 +150,19 @@ void FastXFile::parse()
     ifstream ifs(this->fileName); // construit le flux depuis this
     //
     
-    if (!ifs.good())
+    if ( !ifs.good() )
     {
         cout << "### Unable to open this file 1###"<< endl;
-        throw "### Unable to open this file 2###"; //"Unable to open this file";
-        cout << "### Unable to open this file 3###"<< endl;
+        throw "### Unable to open this file 2###"; 
     }
-    if (ifs) {
+    if (ifs) {  // check fichier vide ? 
         ifs.seekg(0,ios::end);
         size_t sizefile = ifs.tellg();
         if (sizefile == 0) {
             cerr << "### fichier vide ###" << endl;
             throw ;
         }
+        ifs.seekg(0);
     }
     //
     // recherche du premier caractere
@@ -177,7 +175,9 @@ void FastXFile::parse()
         c = ifs.get();}
         // ici ifs est un flag ("marque-page" dans notre flux-fichier)
     //
-    if ( ifs.good() ) { //on peut lire le fichier
+    if ( ifs.good() ) { 
+        //on peut lire le fichier
+        cout << "Format verified ! \n" << endl;
         if (c == '\n')
         {                   //le char précédent est un '\n'
             c = ifs.peek(); //char suivant
@@ -189,28 +189,32 @@ void FastXFile::parse()
         }
         if (c != '\n')
         { // on rencontre alors un char non prévu => error
+            cerr << "Error de format" << endl;
             throw "erreur dummkopf !";
         }
         // now: on sait que le premier caracter est bien '<' ou ';' ou '@'
         //
         if (ifs.peek() == '@')
         {
-            //
             //  tp2: FastaQ
-            //
+            cout << "Zone en travaux revennez plus tard, SVP" << endl;
+            // 
         }
         else
         {
+            cout << "\nDébut Parssing FastA... \nPlease wait...\n" << endl;
             // prochain char = ';' ou '>'
             do
             {
                 string s;
                 getline(ifs, s);
                 this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
+                cout << "nb_seq + 1 = " << nb_sequence  << endl;
             } while (ifs); // compte le nombre de séquence
             this->pos = new size_t[this->nb_sequence];
             // creation du tableau
             this->nb_sequence = 0;
+            cout << " Rock'N Roll" << endl;
             ifs.clear();            // reset le flag/"marque-page" ifs
             ifs.seekg(0);           // reprend à la position 0
             size_t p = ifs.tellg(); // donne la position actuelle
@@ -221,12 +225,13 @@ void FastXFile::parse()
                 if ((s[0] == '>') || (s[0] == ';'))
                 {
                     this->pos[this->nb_sequence++] = p;
+                    cout << " 1UP " << endl;
                 }
                 // stock la nouvelle position
                 // puis encrémente nb_sequence
                 //
                 p = ifs.tellg(); // donne la nouvelle actuelle
             } while (ifs);
-        }
-        }
-}
+        } // end fastA
+        }// end proper parse
+}//fin !
