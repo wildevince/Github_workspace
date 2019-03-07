@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <libgen.h>
+//#include <libgen.h>
 #include "FastXFile.h"
 #include "FastXSeq.h"
 
@@ -12,7 +12,8 @@ using namespace std;
 int main( int argc, char** argv) {
 
      if (argc != 2 ) {
-        cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
+        //cerr << "usage:" << basename(argv[0]) << " <sequence>" << endl;
+        cerr << "usage:" << argv[0] << " <sequence>" << endl;
         return 1; 
     }
     char* s = argv[1] ; 
