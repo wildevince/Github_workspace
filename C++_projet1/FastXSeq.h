@@ -1,7 +1,7 @@
 #ifndef __FXS_H__
 #define __FXS_H__
 
-#include "FastXFile.h"
+//#include "FastXFile.h"
 #include <cstring>
 #include <stddef.h>
 #include <fstream>
@@ -43,7 +43,7 @@ class FastXSeq {
         void setTaille(size_t t);
         //
         void toStream(std::ostream &os) const;
-        void parseq(std::ifstream& ifs, size_t p); 
+        void parseq(std::ifstream& ifs, std::string sp); 
 
     //
 };

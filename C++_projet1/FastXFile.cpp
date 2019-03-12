@@ -1,5 +1,6 @@
 #include "FastXFile.h"
 #include "FastXSeq.h"
+#include "tools.h"
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
@@ -7,7 +8,7 @@
 using namespace std;
 
 // fonctions locales
-char *myStrDup(char *s) //s = &f.fileName
+/*char *myStrDup(char *s) //s = &f.fileName
 {
     char *res = NULL;
     if (s)
@@ -20,7 +21,7 @@ char *myStrDup(char *s) //s = &f.fileName
         }
     }
     return res;
-}
+}*/
 
 ostream& operator<<(ostream &os, const FastXFile &f)
 {
@@ -144,10 +145,10 @@ void FastXFile::toStream(ostream &os) const
     os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
     os << "Nb sequence : " << this->nb_sequence << endl;
     os << "positions des sequences :  " << endl;
-    /*for (size_t i = 0; i < nb_sequence ; ++i) 
+    for (size_t i = 0; i < nb_sequence ; ++i) 
     {
-        this->list_seq[i].toStream(os) ;
-    }*/
+        list_seq[i].toStream(os) ;
+    }
 }
 
 
@@ -232,15 +233,15 @@ void FastXFile::parse()
         {
             cout << "\nDébut Parssing FastA... \nPlease wait...\n" << endl;
             // prochain char = ';' ou '>'
-            do
-            {
-                string s;
-                getline(ifs, s);
+            string s;
+            getline(ifs, s);
+            while (ifs) { // compte le nombre de séquence
                 this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
                 cout << "nb_seq + 1 = " << nb_sequence  << endl;
-            } while (ifs); // compte le nombre de séquence
+                getline(ifs, s);
+            }
             this->pos = new size_t[this->nb_sequence];
-            //this->list_seq = new FastXSeq[nb_sequence];
+            this->list_seq = new FastXSeq[nb_sequence];
             // creation du tableau
             this->nb_sequence = 0;
             cout << " Rock'N Roll" << endl;
@@ -249,14 +250,14 @@ void FastXFile::parse()
             size_t p = ifs.tellg(); // donne la position actuelle
             do
             {
-                FastXSeq xseq;
+                FastXSeq *xseq = new FastXSeq() ; // intermediaire 
                 string s;
                 getline(ifs, s);
-                if ((s[0] == '>') || (s[0] == ';'))
+                if (/*(s[0]=='\n') ||*/ (s[0] == '>') || (s[0] == ';'))
                 {
-                    this->pos[this->nb_sequence++] = p;
-                    xseq.parseq(ifs,p);
-                    //this->list_seq[this->nb_sequence++] = xseq;
+                    this->pos[this->nb_sequence] = p;
+                    xseq->parseq(ifs,s);
+                    this->list_seq[this->nb_sequence++] = *xseq;
                     cout << " 1UP " << endl;
                 }
                 // stock la nouvelle position

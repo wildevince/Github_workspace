@@ -4,14 +4,26 @@
 #include <iostream>
 #include "FastXSeq.h" 
 
+//class FastXSeq ; 
+
+/* FastXfile: Verifie le format, teste l'intégrité du ficher, compte le nbr de 
+sequences et donne la position.
+Methodes /* parse() : méthode qui permet de lire le fichier, vérifie le format,
+recupère la position de la séquence. 
+
+
+   */
+
 class FastXFile {
     private:
-        char*  fileName;
-        size_t *pos; 
-        //FastXSeq *list_seq;
-        size_t nb_sequence;
+        char*  fileName;// Pointeur sur une chaine caracteres correspondant au nom du fichier
+        size_t *pos; // Pointeur sur la position du début de la séquence
+        FastXSeq *list_seq; // Pointeur vers un objet FastXSeq 
+        size_t nb_sequence; // Entier correspondant au nombre de séquences
         //table des XSeq /fasta /fastQ
-        void parse();
+        void parse(); 
+
+
         //FastXSeq::FastXSeq XSeq;
 
     public:
@@ -22,7 +34,7 @@ class FastXFile {
         ~FastXFile();
         // operator=
         FastXFile& operator=(const FastXFile &f); 
-        //FastXSeq& operator[](size_t i) ; // getSequence
+        FastXSeq& operator[](size_t i) ; // getSequence
 
         //accesseur en lecture  getters
         size_t getNbSequence() const ;
@@ -39,7 +51,5 @@ class FastXFile {
 };
 
 std::ostream &operator<<(std::ostream &os, const FastXFile &f);
-char* myStrDup(char* s);
-bool ifspace(char c ) ; // , bool newline) ;
 
 #endif

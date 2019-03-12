@@ -1,8 +1,10 @@
 #include "FastXSeq.h"
+#include "tools.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
+
 
 using namespace std;
 
@@ -89,18 +91,18 @@ void FastXSeq::toStream(ostream &os) const
     os << "taille Sequence : " << taille_seq << '\n' << endl;
 }
 
-void FastXSeq::parseq(ifstream &ifs, size_t p){
-    //size_t p = ifs.tellg();
-    cout << "Han Solo a fait le raide de Kessel en 12 Parseqs !" <<  endl;
+void FastXSeq::parseq(ifstream &ifs, string sp){
+    size_t p = ifs.tellg();
+    //cout << "Han Solo a fait le raide de Kessel en 12 Parseqs !" <<  endl;
     //
-    string head = "";
-    ifs.seekg(p);
-    getline(ifs, head);
-    cout <<"We've found the header : " << head << endl;
-    setHeader(head);
-    cout <<"So the header : " << header << endl;
+    //string head = "";
+    //ifs.seekg(p);
+    //getline(ifs, head);
+    //cout <<"Header detected! : " << head << endl;
+    setHeader( sp.substr(1) );
+    cout <<"The header is : " << header << endl;
     // position du header + taille header 
-    setStart(p + head.size());
+    setStart( p );
     cout << "position sequence : " << start_seq << endl; 
     
     // string substr (size_t pos = 0, size_t len = npos) const;
