@@ -22,6 +22,7 @@ class Matrix :
     c_indel = 1 #lineaire + neg
     #matrice de similarité
     alphaB = ['A','C','G','T']
+    #pos = [] 
     
     def __init__ (self, seq1, seq2) :
         self.S1 = seq1
@@ -124,12 +125,15 @@ class Matrix :
             while ( j-1 < self.ls1 ) :
                 if ( self.deletion(i,j) >= max( self.insert(i,j) , self.match_mist(i,j) ) ):
                     self.content[i][j][0] = self.deletion(i,j)
+                    #self.pos.append(j-1)
                     if (self.mark): self.content[i][j].append(0)
                 elif ( self.insert(i,j) >= self.match_mist(i,j) ):
                     self.content[i][j][0] = self.insert(i,j)
+                    #self.pos.append(j-1)
                     if (self.mark): self.content[i][j].append(2)
                 else : 
                     self.content[i][j][0] = self.match_mist(i,j)
+                    #if (self.S1[j-1] != self.)
                     if (self.mark): self.content[i][j].append(1)
                     #
                 j += 1
@@ -161,33 +165,25 @@ class Matrix :
                     seq2 += "-"
                     j -= 1
         #fin while
+        self.S1 = seq1[::-1]
+        self.S2 = seq2[::-1]
         print(seq1[::-1])
         print(seq2[::-1])
         # fin
-        #
-        #
-        """while ( i < self.ls2 ) or ( j < self.ls1 ) :
-            if ( (self.content[self.ls2-i][self.ls1-j] == self.content[self.ls2-i-1][self.ls1-j-1] - self.c_indel )
-                or (self.content[self.ls2-i][self.ls1-j] == self.content[self.ls2-i-1][self.ls1-j-1] + self.c_match ) ) :
-                    seq1 += self.S1[self.ls1-j-1]
-                    seq2 += self.S2[self.ls2-i-1]
-                    i += 1
-                    j += 1
-            elif ( self.content[self.ls2-i][self.ls1-j] == self.content[self.ls2-i][self.ls1-j-1] - Matrix.c_indel) :
-                seq1 += self.S1[self.ls1-j-1]
-                seq2 += "-"
-                j += 1
-            elif ( self.content[self.ls2-i][self.ls1-j] == self.content[self.ls2-i-1][self.ls1-j] - Matrix.c_indel ) :
-                seq1 += "-"
-                seq2 += self.S2[self.ls2-i-1]
-                i += 1
-            else :
-                seq1 += "-"
-                seq2 += "-"
-                i += 1
-                j += 1
-        """    #
         
+    def give_pos_mutation(self) :
+        pos = []
+        i_max = max(self.ls1, self.ls2)
+        i = 0
+        while (i < i_max) :
+            if (self.S1[i] != self.S2[i] ) : 
+                pos.append(i+1)
+            i += 1
+        aff = input("Afficher les positions ?   1 = oui    0 = no ")
+        if (aff != 0) :
+            print("Les positions des mutations sont : ")
+            print(pos)
+        #
     
     #
 #fin class
@@ -249,6 +245,8 @@ Neo.findScore_throught_table('A','A')
 Neo.affiche()
 
 Neo.backtrack()
+
+Neo.give_pos_mutation()
 
 #for line in Matt.content :
 #    print (line)
