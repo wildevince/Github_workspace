@@ -1,10 +1,10 @@
 #include "FastXSeq.h"
+#include "FastXFile.h"
 #include "tools.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
-
 
 using namespace std;
 
@@ -85,25 +85,28 @@ void FastXSeq::setTaille(size_t t) {
 
 void FastXSeq::toStream(ostream &os) const
 {
-    os << "\n### coucou le stream XSeq ! ###\n" << endl;
+    //os << "\n### coucou le stream XSeq ! ###\n" << endl;
     os << "Header : " << (header? header: "<no header>") << endl;
     os << "positiion sequence dans le fichier : " << start_seq << endl;
     os << "taille Sequence : " << taille_seq << '\n' << endl;
 }
 
 void FastXSeq::parseq(ifstream &ifs, string sp){
-    size_t p = ifs.tellg();
-    //cout << "Han Solo a fait le raide de Kessel en 12 Parseqs !" <<  endl;
+    //size_t p = ifs.tellg();
+    cout << "\t-getting header" <<  endl;
     //
-    //string head = "";
     //ifs.seekg(p);
-    //getline(ifs, head);
-    //cout <<"Header detected! : " << head << endl;
+    //cout << "position avant header : " << ifs.tellg() << endl; 
+    //getline(ifs, cp );
+    //
+    //cout <<"We've found the header : " << head << endl;
     setHeader( sp.substr(1) );
-    cout <<"The header is : " << header << endl;
+    //cout <<"So the header : " << header << endl;
     // position du header + taille header 
-    setStart( p );
-    cout << "position sequence : " << start_seq << endl; 
+    //cout << "position apres header : " << ifs.tellg() << endl; 
+    setStart( ifs.tellg() );
+
+    //cout << "position sequence : " << start_seq << endl; 
     
     // string substr (size_t pos = 0, size_t len = npos) const;
 
