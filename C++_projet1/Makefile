@@ -6,7 +6,7 @@ Norme = -ansi -pedantic
 #SUFFIXES : .cpp .h .o
 
 Prgm = Purgatory
-SOURCE = FastXSeq.cpp FastXFile.cpp
+SOURCE = FastXSeq.cpp FastXFile.cpp main.cpp
 #source_bis = FastXFile.cpp
 HEADERS = FastXSeq.h FastXFile.h tools.h
 #header_bis = fastXFile.h
@@ -23,7 +23,8 @@ FastXFile.o : FastXFile.cpp $(THIS) $(HEADERS)
 #tools.o : tools.cpp tools.h $(THIS)
 #	$(Cxx) -c $(FLAGS) $<
 
-main.o : main.cpp $(SOURCE) $(THIS) $(HEADERS)
+
+main.o : main.cpp FastXSeq.cpp FastXFile.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
 $(Prgm) : $(SOURCE:.cpp=.o)

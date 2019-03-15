@@ -56,7 +56,8 @@ void FastXSeq::setHeader(char* head) {
         delete[] header;
         header = NULL;
     }
-    for (size_t i = 0; i < sizeof(head) ; ++i) 
+    size_t t = sizeof(head);
+    for (size_t i = 0; i < t ; ++i) 
     {
         this->header[i] = head[i];
     }
@@ -64,8 +65,13 @@ void FastXSeq::setHeader(char* head) {
 
 void FastXSeq::setHeader(string head) 
 {
+    if (header) {
+        delete[] header;
+        header = NULL;
+    }
     header = new char[ head.size() ]; 
-    for (size_t i = 0; i < head.size() ; ++i) 
+    size_t t = head.size();
+    for (size_t i = 0; i < t ; ++i) 
     {
         header[i] = head[i];
     } 
@@ -96,8 +102,10 @@ void FastXSeq::parseq(ifstream &ifs, string sp){
     //cout << "position avant header : " << ifs.tellg() << endl; 
     //getline(ifs, cp );
     //
-    //cout <<"We've found the header : " << head << endl;
+    cout <<"the header 'empty' : header  = " << (header? header: "<no header>") << endl;
+    cout <<"We've found the header : head  = " << sp.substr(1) << endl;
     setHeader( sp.substr(1) );
+    cout <<"the header 'pased' : header  = " << (header? header: "<no header>") << endl;
     //cout <<"So the header : " << header << endl;
     // position du header + taille header 
     //cout << "position apres header : " << ifs.tellg() << endl; 
@@ -116,4 +124,5 @@ void FastXSeq::parseq(ifstream &ifs, string sp){
         }
     }while (c != '>' || c != ';' )
     */
+   cout << endl;
 }

@@ -278,13 +278,13 @@ void FastXFile::parse()
                     //cout << "sequence parsed" << endl;
                     this->pos[this->nb_sequence] = p;
                     //
-                    cout << "Parsing a sequence" << endl;
+                    cout << "\nParsing a sequence" << "\tBoooo0" << endl;
                     FastXSeq* xseq = new FastXSeq() ;
                     xseq->parseq(ifs, s);
                     //cout << "Contenu de la sequence xseq : " << endl;
                     //xseq->toStream(cout);
                     this->list_seq[this->nb_sequence++] = *xseq ;
-                    cout << "le char suivant : " << c << endl;
+                    //cout << "le char suivant : " << c << endl;
                     /*if (c == '>' || c == ';') {
                         this->list_seq[this->nb_sequence++].setTaille(ifs.tellg-1)
                     }*/
