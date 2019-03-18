@@ -1,11 +1,7 @@
 #include "tools.h"
-#include <fstream>
-#include <cstring>
+
 #include <stddef.h>
-
-using namespace std;
-
-
+#include <cstring>
 
 char *myStrDup(char *s) //s = &f.fileName
 {
@@ -21,3 +17,6 @@ char *myStrDup(char *s) //s = &f.fileName
     }
     return res;
 }
+
+
+

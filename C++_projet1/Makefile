@@ -6,27 +6,24 @@ Norme = -ansi -pedantic
 #SUFFIXES : .cpp .h .o
 
 Prgm = Purgatory
-SOURCE = FastXFile.cpp FastXSeq.cpp main.cpp tools.cpp
+SOURCE = FastXSeq.cpp FastXFile.cpp
 #source_bis = FastXFile.cpp
-HEADERS = FastXFile.h FastXSeq.h tools.h
+HEADERS = FastXSeq.h FastXFile.h tools.h
 #header_bis = fastXFile.h
 THIS = Makefile
 
-#main.o : main.cpp calculator.h Makefile
-#	g++ main.cpp -o calculatrice
-
 all : $(Prgm)
+
+FastXSeq.o : FastXSeq.cpp $(THIS) FastXSeq.h tools.h
+	$(Cxx) -c $(FLAGS) $<
 
 FastXFile.o : FastXFile.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
-FastXSeq.o : FastXSeq.cpp $(THIS) $(HEADERS)
-	$(Cxx) -c $(FLAGS) $<
+#tools.o : tools.cpp tools.h $(THIS)
+#	$(Cxx) -c $(FLAGS) $<
 
-tools.o : tools.cpp $(THIS) $(HEADERS)
-	$(Cxx) -c $(FLAGS) $<
-
-main.o : main.cpp FastXFile.cpp FastXSeq.cpp tools.cpp $(THIS) $(HEADERS)
+main.o : main.cpp $(SOURCE) $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
 $(Prgm) : $(SOURCE:.cpp=.o)
@@ -36,6 +33,4 @@ clean : #Makefile
 	rm -f *.o
 	rm -f *~
 
-#g++
-
-
+#

@@ -4,8 +4,8 @@
 //#include "FastXFile.h"
 #include <cstring>
 #include <stddef.h>
-#include <fstream>
 #include <iostream>
+
 
 //#include "encoded_sequence.h"
 
@@ -49,5 +49,6 @@ class FastXSeq {
 };
 
 std::ostream& operator<< (std::ostream &os, const FastXSeq& fx);
+
 
 #endif
