@@ -4,8 +4,8 @@
 //#include "FastXFile.h"
 #include <cstring>
 #include <stddef.h>
+#include <fstream>
 #include <iostream>
-
 
 //#include "encoded_sequence.h"
 
@@ -43,13 +43,13 @@ class FastXSeq {
         void setTaille(size_t t);
         //
         void toStream(std::ostream &os) const;
-        void parseq(std::ifstream& ifs, std::string sp);  // Pour parser Fasta
-	    void parseqQ(std::ifstream& ifs, std::string line); // Pour parser Fastq
+        void parseq(std::ifstream& ifs, std::string sp); 
+        void parseqQ(std::ifstream& ifs, std::string line); // Pour parser Fastq
+
 
     //
 };
 
 std::ostream& operator<< (std::ostream &os, const FastXSeq& fx);
-
 
 #endif

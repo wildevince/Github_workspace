@@ -2,18 +2,13 @@
 #include "FastXSeq.h"
 #include "tools.h"
 #include <fstream>
+#include <cstring>
+#include <stddef.h>
 
 using namespace std;
 
 // fonctions locales
-
-ostream &operator<<(ostream &os, const FastXFile &f)
-{
-    f.toStream(os);
-    return os;
-}
-
-char *myStrDup(char *s) //s = &f.fileName
+/*char *myStrDup(char *s) //s = &f.fileName
 {
     char *res = NULL;
     if (s)
@@ -26,27 +21,32 @@ char *myStrDup(char *s) //s = &f.fileName
         }
     }
     return res;
+}*/
+
+ostream& operator<<(ostream &os, const FastXFile &f)
+{
+    f.toStream(os);
+    return os;
 }
 
 bool ifspace(char c) // if char blanc
 {
-    if (c)
-    { // le char existe
-        return (isspace(c) ? true : false);
+    if (c) { // le char existe 
+        return ( isspace(c)? true: false); 
     }
-    else
-    {
-        return false;
+    else {
+    return false;
     }
 }
 
 //____//____//____/ FastaXFile /____//____//____//
 
 // ____ constructor ____ //
-FastXFile::FastXFile(char *f) : fileName(NULL),
-                                pos(NULL),
-                                list_seq(NULL),
-                                nb_sequence(0)
+FastXFile::FastXFile(char *f) : 
+    fileName(NULL), 
+    pos(NULL), 
+    //list_seq(NULL), 
+    nb_sequence(0)
 {
     setFileName(f);
 }
@@ -54,15 +54,13 @@ FastXFile::FastXFile(char *f) : fileName(NULL),
 // ____ constructor par copie ____ //
 FastXFile::FastXFile(const FastXFile &f) : fileName(myStrDup(f.fileName)),
                                            pos(f.pos ? new size_t[f.nb_sequence] : NULL),
-                                           list_seq(f.list_seq ? new FastXSeq[f.nb_sequence] : NULL),
-                                           //list_seq(f.list_seq ? new FastXSeq() : NULL),
+                                           //list_seq(f.list_seq? new FastXSeq[f.nb_sequence] : NULL),
                                            nb_sequence(f.nb_sequence)
 {
     for (size_t i = 0; i < this->nb_sequence; ++i)
     {
         this->pos[i] = f.pos[i];
-        list_seq[i] = f.list_seq[i];
-        //list_seq = f.list_seq;
+        //list_seq[i] = list_seq[i];
     }
 }
 
@@ -77,11 +75,10 @@ FastXFile::~FastXFile()
     {
         delete[] this->pos;
     }
-    if (list_seq)
+    /*if (list_seq)
     {
         delete[] list_seq;
-        //list_seq->~FastXSeq();
-    }
+    }*/
 }
 
 // ____ operator ____ //
@@ -102,39 +99,36 @@ FastXFile &FastXFile::operator=(const FastXFile &f)
                 this->pos = NULL;
             }
             this->pos = (f.pos ? new size_t[f.nb_sequence] : NULL);
-            if (this->list_seq)
+            /*if (this->list_seq)
             {
                 delete[] this->list_seq;
-                //list_seq->~FastXSeq();
                 this->list_seq = NULL;
             }
-            this->list_seq = (f.list_seq ? new FastXSeq[f.nb_sequence] : NULL);
-            //this->list_seq = (f.list_seq ? new FastXSeq() : NULL);
+            this->list_seq = (f.list_seq ? new FastXSeq[f.nb_sequence] : NULL);*/
         }
         this->fileName = myStrDup(f.fileName);
         this->nb_sequence = (f.nb_sequence);
         for (size_t i = 0; i < this->nb_sequence; ++i)
         {
             this->pos[i] = f.pos[i];
-            list_seq[i] = f.list_seq[i];
-            //list_seq = f.list_seq;
+            //list_seq[i] = list_seq[i];
         }
     }
     return *this;
 }
-
-FastXSeq &FastXFile::operator[](size_t i)
+/*
+FastXSeq& FastXFile::operator[](size_t i)
 {
-    if (i >= nb_sequence)
-    {
+    if (i >= nb_sequence ){
         cerr << "out of range" << endl;
-        throw "out of range";
+        throw "out of range" ;
     }
     return this->list_seq[i];
-}
+}*/
+
 
 //____/ getters /____//
-char *FastXFile::getFileName() const
+char* FastXFile::getFileName() const
 {
     return this->fileName;
 }
@@ -147,22 +141,19 @@ size_t FastXFile::getNbSequence() const
 //____/ flux sortant /____//
 void FastXFile::toStream(ostream &os) const
 {
-    //os << "Coucou toStream Hibou !!! " << endl;
+    os << "Coucou toStream Hibou !!! " << endl;
     os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
     os << "Nb sequence : " << this->nb_sequence << endl;
     os << "positions des sequences :  " << endl;
-    for (size_t i = 0; i < nb_sequence; ++i)
+    for (size_t i = 0; i < nb_sequence ; ++i) 
     {
-        this->list_seq[i].toStream(os);
-    } /*
-    if (list_seq)
-    {
-        os << "La sequence : " << list_seq << endl;
-    }*/
+        list_seq[i].toStream(os) ;
+    }
 }
 
+
 //___/ setters /____//
-void FastXFile::setFileName(char *f)
+void FastXFile::setFileName(char* f)
 {
     if (this->fileName)
     {
@@ -254,22 +245,23 @@ void FastXFile::parse()
             this->list_seq = new FastXSeq[nb_sequence];
             // creation du tableau
             this->nb_sequence = 0;
-            cout << "Rock'N Roll" << endl;
+            //cout << "Rock'N Roll" << endl;
             ifs.clear();            // reset le flag/"marque-page" ifs
             ifs.seekg(0);           // reprend � la position 0
-            size_t p = ifs.tellg(); // donne la position actuelle
+            size_t q= ifs.tellg(); // donne la position actuelle
             //FastXSeq* xseq = new FastXSeq() ;
             do
             {
                 string line;
-                cout << "position avant getline : " << ifs.tellg() << endl;
+                //cout << "position avant getline : " << ifs.tellg() << endl;
                 getline(ifs, line, '\n');
 
-                char c = ifs.peek();
+                //char c = ifs.peek();
                 if (line[0] == '@')
                 {
-                    cout << "sequence parsed" << endl;
-                    this->pos[this->nb_sequence] = p;
+                    //cout << "coucou position n " << q<< endl;
+                    this->pos[this->nb_sequence] = q;
+                    //cout << "coucou atta n " << pos[this->nb_sequence] << endl;
                     //
                     cout << "Parsing a sequence" << endl;
                     FastXSeq *xseqQ = new FastXSeq();
@@ -277,13 +269,17 @@ void FastXFile::parse()
                     //cout << "Contenu de la sequence xseq : " << endl;
                     //xseq->toStream(cout);
                     this->list_seq[this->nb_sequence++] = *xseqQ;
-                    cout << "le char suivant : " << c << endl;
+                    //cout << "le char suivant : " << c << endl;
                     /*if (c == '>' || c == ';') {
 						this->list_seq[this->nb_sequence++].setTaille(ifs.tellg-1)
 					}*/
                     delete xseqQ;
+                    //cout << "coucou atta n " << pos[this->nb_sequence] << endl;
+                    //cout << "sequence parsed" << endl;
                 }
+                q= ifs.tellg();
             } while (ifs);
+            cout << "Parsing is completed" << endl;
         } //
     else
     {
@@ -318,8 +314,7 @@ void FastXFile::parse()
                 //cout << "sequence parsed" << endl;
                 this->pos[this->nb_sequence] = p;
                 //
-                cout << "\nParsing a sequence"
-                     << "\tBoooo0" << endl;
+                cout << "\nParsing a sequence" << endl; //"\tBoooo0" << 
                 FastXSeq *xseq = new FastXSeq();
                 xseq->parseq(ifs, s);
                 //cout << "Contenu de la sequence xseq : " << endl;
