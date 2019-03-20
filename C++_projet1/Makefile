@@ -1,7 +1,7 @@
 ## Complilation
 Cxx = g++
-FLAGS = -Wall -O0 -g $(Norme)
 Norme = -ansi -pedantic
+FLAGS = -Wall -O0 -g $(Norme)
 #LD_flags = 
 #SUFFIXES : .cpp .h .o
 

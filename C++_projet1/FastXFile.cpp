@@ -28,7 +28,6 @@ char *myStrDup(char *s) //s = &f.fileName
     return res;
 }
 
-
 bool ifspace(char c) // if char blanc
 {
     if (c)
@@ -152,10 +151,10 @@ void FastXFile::toStream(ostream &os) const
     os << "File : " << (this->fileName ? this->fileName : "<no file>") << endl;
     os << "Nb sequence : " << this->nb_sequence << endl;
     os << "positions des sequences :  " << endl;
-    for (size_t i = 0; i < nb_sequence ; ++i) 
+    for (size_t i = 0; i < nb_sequence; ++i)
     {
-        this->list_seq[i].toStream(os) ;
-    }/*
+        this->list_seq[i].toStream(os);
+    } /*
     if (list_seq)
     {
         os << "La sequence : " << list_seq << endl;
@@ -241,65 +240,106 @@ void FastXFile::parse()
         //
         if (ifs.peek() == '@')
         {
-            //  tp2: FastaQ
-            cout << "Zone en travaux revennez plus tard, SVP" << endl;
-            //
-        }
-        else
-        {
-            cout << "\nStart: Parssing FastA... \nPlease wait...\n"
+            //cout << "Zone en travaux revennez plus tard, SVP" << endl;
+            cout << "\nStart: Parssing FastQ... \nPlease wait...\n"
                  << endl;
-            // prochain char = ';' ou '>'
             do
             {
-                string s;
-                getline(ifs, s);
-                this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
+                string line;
+                getline(ifs, line);
+                this->nb_sequence += ((line[0] == '@') ? 1 : 0);
                 //cout << "nb_seq + 1 = " << nb_sequence << endl;
-            } while (ifs); // compte le nombre de séquence
+            } while (ifs); // compte le nombre de s�quence
             this->pos = new size_t[this->nb_sequence];
             this->list_seq = new FastXSeq[nb_sequence];
             // creation du tableau
             this->nb_sequence = 0;
-            //cout << "Rock'N Roll" << endl;
+            cout << "Rock'N Roll" << endl;
             ifs.clear();            // reset le flag/"marque-page" ifs
-            ifs.seekg(0);           // reprend à la position 0
+            ifs.seekg(0);           // reprend � la position 0
             size_t p = ifs.tellg(); // donne la position actuelle
             //FastXSeq* xseq = new FastXSeq() ;
             do
             {
-                string s;
-                //cout << "position avant getline : " << ifs.tellg() << endl;
-                getline(ifs, s, '\n' );
-                
+                string line;
+                cout << "position avant getline : " << ifs.tellg() << endl;
+                getline(ifs, line, '\n');
+
                 char c = ifs.peek();
-                if (s[0] == '>' || s[0] == ';')
+                if (line[0] == '@')
                 {
-                    //cout << "sequence parsed" << endl;
+                    cout << "sequence parsed" << endl;
                     this->pos[this->nb_sequence] = p;
                     //
-                    cout << "\nParsing a sequence" << "\tBoooo0" << endl;
-                    FastXSeq* xseq = new FastXSeq() ;
-                    xseq->parseq(ifs, s);
+                    cout << "Parsing a sequence" << endl;
+                    FastXSeq *xseqQ = new FastXSeq();
+                    xseqQ->parseqQ(ifs, line);
                     //cout << "Contenu de la sequence xseq : " << endl;
                     //xseq->toStream(cout);
-                    this->list_seq[this->nb_sequence++] = *xseq ;
-                    //cout << "le char suivant : " << c << endl;
+                    this->list_seq[this->nb_sequence++] = *xseqQ;
+                    cout << "le char suivant : " << c << endl;
                     /*if (c == '>' || c == ';') {
+						this->list_seq[this->nb_sequence++].setTaille(ifs.tellg-1)
+					}*/
+                    delete xseqQ;
+                }
+            } while (ifs);
+        } //
+    else
+    {
+        cout << "\nStart: Parssing FastA... \nPlease wait...\n"
+             << endl;
+        // prochain char = ';' ou '>'
+        do
+        {
+            string s;
+            getline(ifs, s);
+            this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
+            //cout << "nb_seq + 1 = " << nb_sequence << endl;
+        } while (ifs); // compte le nombre de séquence
+        this->pos = new size_t[this->nb_sequence];
+        this->list_seq = new FastXSeq[nb_sequence];
+        // creation du tableau
+        this->nb_sequence = 0;
+        //cout << "Rock'N Roll" << endl;
+        ifs.clear();            // reset le flag/"marque-page" ifs
+        ifs.seekg(0);           // reprend à la position 0
+        size_t p = ifs.tellg(); // donne la position actuelle
+        //FastXSeq* xseq = new FastXSeq() ;
+        do
+        {
+            string s;
+            //cout << "position avant getline : " << ifs.tellg() << endl;
+            getline(ifs, s, '\n');
+
+            char c = ifs.peek();
+            if (s[0] == '>' || s[0] == ';')
+            {
+                //cout << "sequence parsed" << endl;
+                this->pos[this->nb_sequence] = p;
+                //
+                cout << "\nParsing a sequence"
+                     << "\tBoooo0" << endl;
+                FastXSeq *xseq = new FastXSeq();
+                xseq->parseq(ifs, s);
+                //cout << "Contenu de la sequence xseq : " << endl;
+                //xseq->toStream(cout);
+                this->list_seq[this->nb_sequence++] = *xseq;
+                //cout << "le char suivant : " << c << endl;
+                /*if (c == '>' || c == ';') {
                         this->list_seq[this->nb_sequence++].setTaille(ifs.tellg-1)
                     }*/
-                    delete xseq;
+                delete xseq;
+            }
 
-                }
-                
-                // stock la nouvelle position
-                // puis encrémente nb_sequence
-                //
-                p = ifs.tellg(); // donne la nouvelle position actuelle
-            } while (ifs);
-            //xseq->parseq(ifs, p);
-            //this->list_seq = xseq;
-            cout << "Parsing is completed" << endl;
-        } // end fastA
-    }     // end proper parse
+            // stock la nouvelle position
+            // puis encrémente nb_sequence
+            //
+            p = ifs.tellg(); // donne la nouvelle position actuelle
+        } while (ifs);
+        //xseq->parseq(ifs, p);
+        //this->list_seq = xseq;
+        cout << "Parsing is completed" << endl;
+    } // end fastA
+} // end proper parse
 } //fin !

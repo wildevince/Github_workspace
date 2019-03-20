@@ -126,3 +126,57 @@ void FastXSeq::parseq(ifstream &ifs, string sp){
     */
    cout << endl;
 }
+
+void FastXSeq::parseqQ(ifstream &ifs, string line)
+{
+	//A voir si on rajoute un controle bool isNseq = false while(isN Seq) isNseq=(count==)?true:false;
+	bool hasN = false;
+	do
+	{
+		// Block Header 
+		cout << "Header Trouve :" << line.substr(1) << endl;
+		this->setHeader(line.substr(1)); // Recupere l'entete
+		// Block SEq
+		size_t count = 0;
+		hasN = false;
+		getline(ifs, line);
+		while (line[0] != '+')
+		{
+			cout << "controle line seq : " << line << endl;
+			count += (line.size() - 1) ;// Marcher sur la seq
+			hasN = ((line.find('N') == string::npos ? false : true)); // On peut remplacer string::npos par -1
+			getline(ifs, line);
+		}
+		//controle
+		cout << "compte =" << count << endl;
+		// Block Q
+		while (count != 0)
+		{
+			line = "";
+			getline(ifs, line);
+			cout << "controle line qual : " << line << endl;
+			for (size_t i = 0; i < (line.size() - 1) ; ++i)
+			{
+				cout << "In the 'for'-terress ^^ joke ^^" << endl;
+                if ( !ifspace(line[i]) )
+				{
+					--count;
+                    if (count == 0) {
+                        cout << "It is the end : count =" << count << endl;
+                        break;
+                    }
+				}
+			}
+            int a;
+            cin >> a ;
+		}
+		if (count == 0 && !hasN)
+		{
+			cout << "Parsing complete " << endl;
+			return; //isNseqQ=false
+			
+		}
+	} while (hasN);
+    cout << "Mama Mia, here we go again ! " << endl;
+	
+}

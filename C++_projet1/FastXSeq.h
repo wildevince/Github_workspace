@@ -43,7 +43,8 @@ class FastXSeq {
         void setTaille(size_t t);
         //
         void toStream(std::ostream &os) const;
-        void parseq(std::ifstream& ifs, std::string sp); 
+        void parseq(std::ifstream& ifs, std::string sp);  // Pour parser Fasta
+	    void parseqQ(std::ifstream& ifs, std::string line); // Pour parser Fastq
 
     //
 };
