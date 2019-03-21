@@ -1,26 +1,30 @@
 ## Complilation
 Cxx = g++
-FLAGS = -Wall -O0 -g
 Norme = -ansi -pedantic
+FLAGS = -Wall -O0 -g $(Norme)
 #LD_flags = 
 #SUFFIXES : .cpp .h .o
 
-Prgm = albanrithmetic
-SOURCE = FastXFile.cpp main.cpp
+Prgm = Purgatory
+SOURCE = FastXSeq.cpp FastXFile.cpp main.cpp
 #source_bis = FastXFile.cpp
-HEADERS = FastXFile.h
+HEADERS = FastXSeq.h FastXFile.h tools.h
 #header_bis = fastXFile.h
 THIS = Makefile
 
-#main.o : main.cpp calculator.h Makefile
-#	g++ main.cpp -o calculatrice
-
 all : $(Prgm)
+
+FastXSeq.o : FastXSeq.cpp $(THIS) FastXSeq.h tools.h
+	$(Cxx) -c $(FLAGS) $<
 
 FastXFile.o : FastXFile.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
-main.o : main.cpp FastXFile.cpp $(THIS) $(HEADERS)
+#tools.o : tools.cpp tools.h $(THIS)
+#	$(Cxx) -c $(FLAGS) $<
+
+
+main.o : main.cpp FastXSeq.cpp FastXFile.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
 $(Prgm) : $(SOURCE:.cpp=.o)
@@ -30,4 +34,4 @@ clean : #Makefile
 	rm -f *.o
 	rm -f *~
 
-#g++
+#
