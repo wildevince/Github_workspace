@@ -1,6 +1,12 @@
 #ifndef __ECS_H__
 #define __ECS_H__
 
+/* alert
+ manques les imports
+ et encode et decode */
+
+
+
 /* codage :
  A  = 00  (0)        
 T/U = 01  (1)
