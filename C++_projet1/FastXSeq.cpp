@@ -124,7 +124,7 @@ void FastXSeq::parseqQ(ifstream &ifs, string line)
 	do
 	{
 		// Block Header 
-		cout << "Header Trouve :" << line.substr(1) << endl;
+		//cout << "Header Trouve :" << line.substr(1) << endl;
 		this->setHeader(line.substr(1)); // Recupere l'entete
 		// Block SEq
         setStart( ifs.tellg() );
@@ -133,7 +133,7 @@ void FastXSeq::parseqQ(ifstream &ifs, string line)
 		getline(ifs, line);
 		while (line[0] != '+')
 		{
-			cout << "controle line seq : " << line << endl;
+			//cout << "controle line seq : " << line << endl;
 			count += (line.size() - 1) ;// Marcher sur la seq
 			hasN = ((line.find('N') == string::npos ? false : true)); // On peut remplacer string::npos par -1
 			getline(ifs, line);
@@ -145,7 +145,7 @@ void FastXSeq::parseqQ(ifstream &ifs, string line)
 		{
 			line = "";
 			getline(ifs, line);
-			cout << "controle line qual : " << line << endl;
+			//cout << "controle line qual : " << line << endl;
 			for (size_t i = 0; i < (line.size() - 1) ; ++i)
 			{
 				//cout << "In the 'for'-terress ^^ joke ^^" << endl;
