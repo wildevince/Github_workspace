@@ -21,7 +21,7 @@ private:
 
 public:
 
-	// référence à la classe FastXSeq 
+	// rÃ©fÃ©rence Ã  la classe FastXSeq 
 	FastXSeq *list_seq;
 
 	// constructor
@@ -38,7 +38,7 @@ public:
 	char* getFileName() const;
 	//FastXSeq& getSequence(size_t i) const;
 
-	//accesseur d'écriture  setters
+	//accesseur d'Ã©criture  setters
 	void setFileName(char* f);
 
 	// display par flux de sorti

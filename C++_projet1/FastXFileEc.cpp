@@ -184,7 +184,7 @@ void FastXFile::setFileName(char *f)
 	}
 }
 
-//___/ methote privé /____//
+//___/ methote privÃ© /____//
 void FastXFile::parse()
 {
 	//
@@ -226,7 +226,7 @@ void FastXFile::parse()
 		cout << "Format verified ! \n"
 			<< endl;
 		if (c == '\n')
-		{                   //le char précédent est un '\n'
+		{                   //le char prÃ©cÃ©dent est un '\n'
 			c = ifs.peek(); //char suivant
 			if ((c == '>') || (c == ';') || (c == '@'))
 			{
@@ -235,7 +235,7 @@ void FastXFile::parse()
 			} // alors okay^^
 		}
 		if (c != '\n')
-		{ // on rencontre alors un char non prévu => error
+		{ // on rencontre alors un char non prÃ©vu => error
 			cerr << "Error de format" << endl;
 			throw "erreur dummkopf !";
 		}
@@ -253,14 +253,14 @@ void FastXFile::parse()
 				getline(ifs, line);
 				this->nb_sequence += ((line[0] == '@') ? 1 : 0);
 				//cout << "nb_seq + 1 = " << nb_sequence << endl;
-			} while (ifs); // compte le nombre de séquence
+			} while (ifs); // compte le nombre de sÃ©quence
 			this->pos = new size_t[this->nb_sequence];
 			this->list_seq = new FastXSeq[nb_sequence];
 			// creation du tableau
 			this->nb_sequence = 0;
 			cout << "Rock'N Roll" << endl;
 			ifs.clear();            // reset le flag/"marque-page" ifs
-			ifs.seekg(0);           // reprend à la position 0
+			ifs.seekg(0);           // reprend Ã  la position 0
 			size_t p = ifs.tellg(); // donne la position actuelle
 			//FastXSeq* xseq = new FastXSeq() ;
 			do
@@ -288,6 +288,7 @@ void FastXFile::parse()
 					delete xseqQ;
 
 				}
+				p = ifs.tellg();
 			} while (ifs);
 		}
 		else
@@ -301,14 +302,14 @@ void FastXFile::parse()
 				getline(ifs, s);
 				this->nb_sequence += ((s[0] == '>') || (s[0] == ';'));
 				//cout << "nb_seq + 1 = " << nb_sequence << endl;
-			} while (ifs); // compte le nombre de séquence
+			} while (ifs); // compte le nombre de sÃ©quence
 			this->pos = new size_t[this->nb_sequence];
 			this->list_seq = new FastXSeq[nb_sequence];
 			// creation du tableau
 			this->nb_sequence = 0;
 			//cout << "Rock'N Roll" << endl;
 			ifs.clear();            // reset le flag/"marque-page" ifs
-			ifs.seekg(0);           // reprend à la position 0
+			ifs.seekg(0);           // reprend Ã  la position 0
 			size_t p = ifs.tellg(); // donne la position actuelle
 			//FastXSeq* xseq = new FastXSeq() ;
 			do
@@ -338,7 +339,7 @@ void FastXFile::parse()
 				}
 
 				// stock la nouvelle position
-				// puis encrémente nb_sequence
+				// puis encrÃ©mente nb_sequence
 				//
 				p = ifs.tellg(); // donne la nouvelle position actuelle
 			} while (ifs);
