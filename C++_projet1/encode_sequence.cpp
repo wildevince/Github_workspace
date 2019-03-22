@@ -111,7 +111,7 @@ void EncodedSeq::clear()
         {
             n = i;
         }
-        reverve(i); 
+        reserve(i); 
         char &B = this->tabseq[getByte(i)]; // B = adress du char
         size_t shift((3 - getPosByte(i)) << 1); // décalage en fct de la position du char dans l'octet
         B &= ~(3 << shift); // on a supp le char précedent mais en gardant les autres 
