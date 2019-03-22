@@ -105,7 +105,7 @@ void EncodedSeq::clear()
         if (i > N)
         {
             cout << "Out of range" << endl;
-            throw "Out of range";
+            //throw "Out of range";
         }
         if (i > n)
         {
