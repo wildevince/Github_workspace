@@ -288,6 +288,7 @@ void FastXFile::parse()
 					delete xseqQ;
 
 				}
+				p = ifs.tellg();
 			} while (ifs);
 		}
 		else
