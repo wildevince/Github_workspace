@@ -1,9 +1,18 @@
 #ifndef __ECS_H__
 #define __ECS_H__
 
-/* alert
+#include <fstream>
+#include <cstring>
+#include <stddef.h>
+
+
+/*
+    alert
  manques les imports
- et encode et decode */
+ et encode et decode 
+ getNucleotide() 
+
+ */
 
 
 
@@ -17,9 +26,9 @@ T/U = 01  (1)
 class EncodedSeq {
     private:
         size_t n, N; // n = taille courante,  N = taille total allouée
-        char* tabseq; // sequence
+        char* tabseq ;  // sequence
         static size_t getByte(size_t i);
-        static size_t getPosByte(size_t i = 0);
+        static size_t getPosInByte(size_t i = 0);
 
     public:
         EncodedSeq();
@@ -40,7 +49,7 @@ class EncodedSeq {
         // operator (ou exclusif)
         // EncodedSeq subseq( size_t start, siret_t l= (size_t) -1) const
         // EncodedSeq operator() (size_t start, siret_t l= (size_t) -1) const
-        )
+        
 
 };
 

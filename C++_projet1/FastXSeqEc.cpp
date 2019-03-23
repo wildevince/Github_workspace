@@ -56,7 +56,7 @@ void FastXSeq::setHeader(char* head) {
 		delete[] header;
 		header = NULL;
 	}
-	for (size_t i = 0; i < sizeof(head); ++i)
+	for (size_t i = 0; i < strlen(head); ++i)
 	{
 		this->header[i] = head[i];
 	}
@@ -65,7 +65,7 @@ void FastXSeq::setHeader(char* head) {
 void FastXSeq::setHeader(string head)
 {
 	header = new char[head.size()];
-	for (size_t i = 0; i < head.size(); ++i)
+	for (size_t i = 0; i < (head.size() + 1) ; ++i)
 	{
 		header[i] = head[i];
 	}
@@ -124,16 +124,17 @@ void FastXSeq::parseqQ(ifstream &ifs, string line)
 	do
 	{
 		// Block Header 
-		cout << "Header Trouvé :" << line.substr(1) << endl;
-		this->setHeader(line.substr(1)); // Récupère l'entete
+		cout << "Header TrouvÃ© :" << line.substr(1) << endl;
+		this->setHeader(line.substr(1)); // RÃ©cupÃ¨re l'entete
 		// Block SEq
+		setStart(ifs.tellg());
 		size_t count = 0;
 		bool hasN = false;
 		getline(ifs, line);
 		while (line[0] != '+')
 		{
 			cout << "controle line seq : " << line << endl;
-			count += line.size();// Marcher sur la seq
+			count += line.size()-1;// Marcher sur la seq
 			hasN = ((line.find('N') == string::npos ? false : true)); // On peut remplacer string::npos par -1
 			getline(ifs, line);
 		}
@@ -150,8 +151,15 @@ void FastXSeq::parseqQ(ifstream &ifs, string line)
 				if (!ifspace(line[i]))
 				{
 					--count;
+					if (count == 0) 
+					{
+						cout << "It is the end : count =" << count << endl;
+						break;
+					}
 				}
 			}
+			int a;
+			cin >> a;
 		}
 		if (count == 0 && !hasN)
 		{
