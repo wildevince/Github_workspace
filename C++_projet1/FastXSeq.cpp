@@ -1,7 +1,10 @@
 #include "FastXSeq.h"
-#include "FastXFile.h"
 #include "tools.h"
+#include <iostream>
 #include <fstream>
+#include <cstring>
+#include <stddef.h>
+
 
 using namespace std;
 
@@ -56,7 +59,7 @@ void FastXSeq::setHeader(char* head) {
         delete[] header;
         header = NULL;
     }
-    for (size_t i = 0; i < sizeof(head) ; ++i) 
+    for (size_t i = 0; i < strlen(head) ; ++i)  // modif sizeof () ?
     {
         this->header[i] = head[i];
     }
@@ -65,7 +68,7 @@ void FastXSeq::setHeader(char* head) {
 void FastXSeq::setHeader(string head) 
 {
     header = new char[ head.size() ]; 
-    for (size_t i = 0; i < head.size() ; ++i) 
+    for (size_t i = 0; i < (head.size()+1) ; ++i)  // try +1 ?
     {
         header[i] = head[i];
     } 
@@ -82,28 +85,25 @@ void FastXSeq::setTaille(size_t t) {
 
 void FastXSeq::toStream(ostream &os) const
 {
-    //os << "\n### coucou le stream XSeq ! ###\n" << endl;
+    os << "\n### coucou le stream XSeq ! ###\n" << endl;
     os << "Header : " << (header? header: "<no header>") << endl;
     os << "positiion sequence dans le fichier : " << start_seq << endl;
     os << "taille Sequence : " << taille_seq << '\n' << endl;
 }
 
 void FastXSeq::parseq(ifstream &ifs, string sp){
-    //size_t p = ifs.tellg();
-    cout << "\t-getting header" <<  endl;
+    size_t p = ifs.tellg();
+    //cout << "Han Solo a fait le raide de Kessel en 12 Parseqs !" <<  endl;
     //
+    //string head = "";
     //ifs.seekg(p);
-    //cout << "position avant header : " << ifs.tellg() << endl; 
-    //getline(ifs, cp );
-    //
-    //cout <<"We've found the header : " << head << endl;
+    //getline(ifs, head);
+    //cout <<"Header detected! : " << head << endl;
     setHeader( sp.substr(1) );
-    //cout <<"So the header : " << header << endl;
+    cout <<"The header is : " << header << endl;
     // position du header + taille header 
-    //cout << "position apres header : " << ifs.tellg() << endl; 
-    setStart( ifs.tellg() );
-
-    //cout << "position sequence : " << start_seq << endl; 
+    setStart( p );
+    cout << "position sequence : " << start_seq << endl; 
     
     // string substr (size_t pos = 0, size_t len = npos) const;
 
@@ -116,4 +116,58 @@ void FastXSeq::parseq(ifstream &ifs, string sp){
         }
     }while (c != '>' || c != ';' )
     */
+}
+void FastXSeq::parseqQ(ifstream &ifs, string line)
+{
+	//A voir si on rajoute un controle bool isNseq = false while(isN Seq) isNseq=(count==)?true:false;
+	bool hasN = false;
+	do
+	{
+		// Block Header 
+		//cout << "Header Trouve :" << line.substr(1) << endl;
+		this->setHeader(line.substr(1)); // Recupere l'entete
+		// Block SEq
+        setStart( ifs.tellg() );
+		size_t count = 0;
+		hasN = false;
+		getline(ifs, line);
+		while (line[0] != '+')
+		{
+			//cout << "controle line seq : " << line << endl;
+			count += (line.size() - 1) ;// Marcher sur la seq
+			hasN = ((line.find('N') == string::npos ? false : true)); // On peut remplacer string::npos par -1
+			getline(ifs, line);
+		}
+		//controle
+		cout << "compte =" << count << endl;
+		// Block Q
+		while (count != 0)
+		{
+			line = "";
+			getline(ifs, line);
+			//cout << "controle line qual : " << line << endl;
+			for (size_t i = 0; i < (line.size() - 1) ; ++i)
+			{
+				//cout << "In the 'for'-terress ^^ joke ^^" << endl;
+                if ( !ifspace(line[i]) )
+				{
+					--count;
+                    if (count == 0) {
+                        cout << "It is the end : count =" << count << endl;
+                        break;
+                    }
+				}
+			}
+            //int a;
+            //cin >> a ;
+		}
+		if (count == 0 && !hasN)
+		{
+			cout << "Parsing complete " << endl;
+			return; //isNseqQ=false
+			
+		}
+    cout << "Mama Mia, here we go again ! " << endl;
+    } while (hasN);
+	
 }

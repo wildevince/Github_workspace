@@ -1,29 +1,29 @@
 ## Complilation
 Cxx = g++
-FLAGS = -Wall -O0 -g $(Norme)
 Norme = -ansi -pedantic
+FLAGS = -Wall -O0 -g $(Norme)
 #LD_flags = 
 #SUFFIXES : .cpp .h .o
 
 Prgm = Purgatory
-SOURCE = FastXSeq.cpp FastXFile.cpp
+SOURCE = FastXSeqEc.cpp FastXFileEc.cpp tools.cpp main.cpp
 #source_bis = FastXFile.cpp
-HEADERS = FastXSeq.h FastXFile.h tools.h
+HEADERS = FastXSeqEc.h FastXFileEc.h tools.h
 #header_bis = fastXFile.h
 THIS = Makefile
 
 all : $(Prgm)
 
-FastXSeq.o : FastXSeq.cpp $(THIS) FastXSeq.h tools.h
+FastXSeqEc.o : FastXSeqEc.cpp $(THIS) FastXSeqEc.h tools.h
 	$(Cxx) -c $(FLAGS) $<
 
-FastXFile.o : FastXFile.cpp $(THIS) $(HEADERS)
+FastXFileEc.o : FastXFileEc.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
-#tools.o : tools.cpp tools.h $(THIS)
-#	$(Cxx) -c $(FLAGS) $<
+tools.o : tools.cpp tools.h $(THIS)
+	$(Cxx) -c $(FLAGS) $<
 
-main.o : main.cpp $(SOURCE) $(THIS) $(HEADERS)
+main.o : main.cpp FastXSeqEc.cpp FastXFileEc.cpp tools.cpp $(THIS) $(HEADERS)
 	$(Cxx) -c $(FLAGS) $<
 
 $(Prgm) : $(SOURCE:.cpp=.o)
