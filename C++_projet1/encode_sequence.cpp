@@ -1,5 +1,6 @@
 #include "encoded_sequence.h"
 #include "random" 
+#include <iostream>
 #include <fstream>
 #include <cstring>
 #include <stddef.h>
@@ -18,7 +19,7 @@ EncodedSeq::EncodedSeq(size_t n) : n(0), N(n ? getByte(n) + 1 : 0), tabseq(N ? n
 {
 }
 
-EncodedSeq::EncodedSeq(const EncodedSeq &es) : n(es.n), N(es.N) tabseq(n ? new char[N] : NULL)
+EncodedSeq::EncodedSeq(const EncodedSeq &es) : n(es.n), N(es.N), tabseq(n ? new char[N] : NULL)
 {
     copy(es.tabseq, es.tabseq + N, tabseq);
 }
@@ -50,9 +51,9 @@ void EncodedSeq::clear()
         N = 0;
         n = 0;
     }
-
-    void EncodedSeq::reserve(size_t n)
-    {
+}
+void EncodedSeq::reserve(size_t n)
+{
         size_t M = getByte(n) + 1;
         if (M > this->N)
         {
@@ -62,14 +63,14 @@ void EncodedSeq::clear()
             this->tabseq = tab;
             this->N = M;
         }
-    }
+}
 
-    static size_t EncodedSeq::getByte(size_t i)
+size_t EncodedSeq::getByte(size_t i)
     {                                  // en comptant à partir de 1 ( d'ou le 'i-1' )
         return (i ? (i - 1) >> 2 : 0); // on a diviser i-1 par 4 ! on a donc le nombre d'octet
     }
 
-    static size_t EncodedSeq::getPosInByte(size_t i = 0)
+size_t EncodedSeq::getPosInByte(size_t i)
     {                                 // la position dans l'octet
         return (i ? (i - 1) & 3 : 0); //  =  modulo par 4 (%4) : soit 0, 1, 2, 3
         /* '&' = et binaire
@@ -82,23 +83,43 @@ void EncodedSeq::clear()
     // methode static privé ou pas ?
     char encode(char c)
     {
-        return (((c == 'a') || (c == 'A')) ? 0 : (((c == 'c') || (c == 'C')) ? 3 : (((c == 'g') || (c == 'G')) ? 2 : (((c == 't') || (c == 'T') || (c == 'u') || (c == 'U')) ? 1 : (rand() & 3)))));
+        return (((c == 'a') || (c == 'A'))
+                ? 0
+                  : (((c == 'c') || (c == 'C'))
+                     ? 3
+                       : (((c == 'g') || (c == 'G'))
+                          ? 2
+                            : (((c == 't') || (c == 'T') || (c == 'u') || (c == 'U'))
+                               ? 1
+                                 : (mrand48() & 3)))));
     }
 
     // a placer
     // methode static privé ou pas ?
     char decode(char ec)
     {
-    return ((ec==0)?'A': ((ec==1)?'T': ((ec==2)?'G': ((ec==3)?'C'))));
+    return ((ec==0)?'A'
+            : ((ec==1)
+               ?'T'
+               : ((ec==2)
+                  ?'G'
+                  :'C')));
+                  //: ((ec==3)?'C'))));
     }
 
     //corected
     char EncodedSeq::operator[](size_t i) const
     { // en comptant à partir de 1
-        if (i < n)
+      try
         {
-            cout << "out of range" << endl;
-            throw "out of range";
+          if (i < n)
+            {
+              throw "out of range";
+            }
+        }
+      catch(const char* exception)
+        {
+          cerr << exception << endl;
         }
         //size_t x = getByte(i+1);
         char c = tabseq[getByte(i)]; // je veux le caractere dans l'octet n° i
@@ -108,24 +129,30 @@ void EncodedSeq::clear()
 
     void EncodedSeq::setNucleotide(size_t i, char c)
     {
-        if (i > N)
+      try
         {
-            cout << "Out of range" << endl;
-            //throw "Out of range";
+          if (i > N)
+            {
+            throw "Out of range";
+            }
         }
-        reserve(i);
-        if (i > n)
+      catch(const char* exception)
+        {
+          cerr << exception << endl;
+        }
+      reserve(i);
+      if (i > n)
         {
             n = i;
         }
-<<<<<<< HEAD
-        char B = this->tabseq[getByte(i)]; // B = adress du char
-        size_t shift = ((3 - getPosInByte(i)) << 1); // décalage en fct de la position du char dans l'octet
-=======
+      //<<<<<<< HEAD
+      //char B = this->tabseq[getByte(i)]; // B = adress du char
+      //size_t shift = ((3 - getPosInByte(i)) << 1); // décalage en fct de la position du char dans l'octet
+        //=======
         reserve(i); 
         char &B = this->tabseq[getByte(i)]; // B = adress du char
-        size_t shift((3 - getPosByte(i)) << 1); // décalage en fct de la position du char dans l'octet
->>>>>>> bb9a195b87981550c346358b8b46f17221718a56
+        size_t shift((3 - getPosInByte(i)) << 1); // décalage en fct de la position du char dans l'octet
+        //>>>>>>> bb9a195b87981550c346358b8b46f17221718a56
         B &= ~(3 << shift); // on a supp le char précedent mais en gardant les autres 
         // puis encode(c) = la version encodee du new char à ecrire
         B |= (encode(c) << shift); // on le place donc au bon endroit
