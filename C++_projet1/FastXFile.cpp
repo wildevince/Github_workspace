@@ -179,19 +179,31 @@ void FastXFile::parse()
     ifstream ifs(this->fileName); // construit le flux depuis this
     //
 
-    if (!ifs.good())
-    {
-        cout << "### Unable to open this file ###" << endl;
-        throw "### Unable to open this file ###";
-    }
+    try
+      {
+        if (!ifs.good())
+          {
+            throw "Unable to open this file";
+          }
+      }
+    catch(const char* exception)
+      {
+        cerr << "Error: " << exception << endl;
+      }
     if (ifs)
     { // check fichier vide ?
         ifs.seekg(0, ios::end);
         size_t sizefile = ifs.tellg();
-        if (sizefile == 0)
-        {
-            cerr << "### fichier vide ###" << endl;
-            throw;
+        try{
+          if (sizefile == 0)
+            {
+               "### fichier vide ###";
+               throw "### fichier vide ###";
+            }
+        }
+        catch(const char* exception)
+          {
+            cerr << exception << endl;
         }
         ifs.seekg(0);
     }
@@ -222,11 +234,17 @@ void FastXFile::parse()
                 c = '\n';
             } // alors okay^^
         }
-        if (c != '\n')
-        { // on rencontre alors un char non prévu => error
-            cerr << "Error de format" << endl;
-            throw "erreur dummkopf !";
-        }
+        try
+          {
+            if (c != '\n')
+              { // on rencontre alors un char non prévu => error
+                throw "erreur de format!";
+              }
+          }
+        catch(const char* exception)
+          {
+            cerr << exception << endl;
+          }
         // now: on sait que le premier caracter est bien '<' ou ';' ou '@'
         //
         if (ifs.peek() == '@')

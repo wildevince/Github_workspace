@@ -111,15 +111,21 @@ void EncodedSeq::clear()
         if (i > N)
         {
             cout << "Out of range" << endl;
-            throw "Out of range";
+            //throw "Out of range";
         }
         reserve(i);
         if (i > n)
         {
             n = i;
         }
+<<<<<<< HEAD
         char B = this->tabseq[getByte(i)]; // B = adress du char
         size_t shift = ((3 - getPosInByte(i)) << 1); // décalage en fct de la position du char dans l'octet
+=======
+        reserve(i); 
+        char &B = this->tabseq[getByte(i)]; // B = adress du char
+        size_t shift((3 - getPosByte(i)) << 1); // décalage en fct de la position du char dans l'octet
+>>>>>>> bb9a195b87981550c346358b8b46f17221718a56
         B &= ~(3 << shift); // on a supp le char précedent mais en gardant les autres 
         // puis encode(c) = la version encodee du new char à ecrire
         B |= (encode(c) << shift); // on le place donc au bon endroit
