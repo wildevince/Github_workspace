@@ -15,7 +15,7 @@ class FastXSeq
 	size_t taille_seq; // sert à rien 
 	//
 	//std::string sequence;
-	EncodedSeq *es;
+	EncodedSeq es;
 	//FastXSeq *l_xseq;
 	//FastXFile fichier;
 
@@ -32,7 +32,7 @@ class FastXSeq
 	char operator[](size_t i);
 	//
 	char *getHeader() const;
-	EncodedSeq& getSequence() const;
+	const EncodedSeq& getSequence() const;
 	size_t getStart() const;
 	size_t getSize() const; // appel direct es.size(); 
 	//encodedSeq& getSequence() const;

@@ -5,6 +5,7 @@
 #include <cstring>
 #include <stddef.h>
 #include <iostream>
+#include "tools.h"
 
 /*
     alert
@@ -37,7 +38,7 @@ class EncodedSeq
     EncodedSeq &operator=(const EncodedSeq &es); // methode applée quand j'instancie EncodedSeq dans parseq
 
     char getNucleotide(size_t i) const; // en comptant à partir de 1
-    size_t size() const;
+    size_t size() const; // donne n  : taille courante
     void setNucleotide(size_t i, char c); // en comptant à partir de 1
     void clear();
     void reserve(size_t n);

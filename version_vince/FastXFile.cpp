@@ -48,8 +48,8 @@ bool ifspace(char c) // if char blanc
 // ____ constructor ____ //
 FastXFile::FastXFile(char *f) : fileName(NULL),
 pos(NULL),
-list_seq(NULL),
-nb_sequence(0)
+nb_sequence(0),
+list_seq(NULL)
 {
 	setFileName(f);
 }
@@ -57,9 +57,9 @@ nb_sequence(0)
 // ____ constructor par copie ____ //
 FastXFile::FastXFile(const FastXFile &f) : fileName(myStrDup(f.fileName)),
 pos(f.pos ? new size_t[f.nb_sequence] : NULL),
-list_seq(f.list_seq ? new FastXSeq[f.nb_sequence] : NULL),
+nb_sequence(f.nb_sequence),
+list_seq(f.list_seq ? new FastXSeq[f.nb_sequence] : NULL)
 //list_seq(f.list_seq ? new FastXSeq() : NULL),
-nb_sequence(f.nb_sequence)
 {
 	for (size_t i = 0; i < this->nb_sequence; ++i)
 	{

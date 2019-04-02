@@ -22,3 +22,24 @@ char *myStrDup(char *s) //s = &f.fileName
     }
     return res;
 }
+
+bool ifnucl(char c, bool degenerated) {
+  return (((c == 'a') || (c == 'A')
+        || (c == 'c') || (c == 'C')
+        || (c == 'g') || (c == 'G')
+        || (c == 't') || (c == 'T')
+        || (c == 'u') || (c == 'U'))
+        || (degenerated
+            && ((c == 'b') || (c == 'B')
+             || (c == 'd') || (c == 'D')
+             || (c == 'h') || (c == 'H')
+             || (c == 'v') || (c == 'V')
+             || (c == 'k') || (c == 'K')
+             || (c == 'm') || (c == 'M')
+             || (c == 'r') || (c == 'R')
+             || (c == 'y') || (c == 'Y')
+             || (c == 'w') || (c == 'W')
+             || (c == 's') || (c == 'S')
+             || (c == '-')
+             || (c == 'n') || (c == 'N'))));
+}

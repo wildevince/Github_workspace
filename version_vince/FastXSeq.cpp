@@ -7,7 +7,11 @@ using namespace std;
 
 //____//____//____/ FastXSeq /____//____//____//
 
-FastXSeq::FastXSeq(char *head, size_t p, size_t t, EncodedSeq *aes) : header(head), start_seq(p), taille_seq(t), es(aes) {}
+FastXSeq::FastXSeq(char *head, size_t p, size_t t, EncodedSeq *aes) : header(head), start_seq(p), taille_seq(t), es() {
+	if (aes) {
+		es = *aes;
+	}
+}
 
 FastXSeq::FastXSeq(const FastXSeq &fx) : header(myStrDup(fx.header)),
 										 start_seq(fx.start_seq),
@@ -20,10 +24,6 @@ FastXSeq::~FastXSeq()
 	{
 		delete[] header;
 	}
-	if (es)
-	{
-		delete es;
-	}
 }
 
 FastXSeq &FastXSeq::operator=(const FastXSeq &fx)
@@ -31,10 +31,6 @@ FastXSeq &FastXSeq::operator=(const FastXSeq &fx)
 	if (header)
 	{
 		delete[] header;
-	}
-	if (es)
-	{
-		delete es;
 	}
 	//
 	this->header = myStrDup(fx.header);
@@ -52,9 +48,9 @@ char FastXSeq::operator[](size_t i)
 
 EncodedSeq &FastXSeq::operator+=(const std::string sp)
 {
-	this->getSequence() += sp; // EncodedSeq::operator+= 
-	this->setTaille(es->size()); //Up-to-Date la taille
-	return (*es);
+	es += sp; // EncodedSeq::operator+= 
+	this->setTaille(es.size()); //Up-to-Date la taille
+	return es;
 }
 
 char *FastXSeq::getHeader() const
@@ -62,9 +58,9 @@ char *FastXSeq::getHeader() const
 	return header;
 }
 
-EncodedSeq& FastXSeq::getSequence() const
+const EncodedSeq& FastXSeq::getSequence() const
 {
-	return (*es);
+	return es;
 }
 
 size_t FastXSeq::getStart() const
@@ -113,52 +109,70 @@ void FastXSeq::toStream(ostream &os) const
 	//os << "\n### coucou le stream XSeq ! ###\n" << endl;
 	os << "Header : " << (header ? header : "<no header>") << endl;
 	os << "positiion sequence dans le fichier : " << start_seq << endl;
-	os << "taille Sequence : " << es->size() << '\n'
+	os << "taille Sequence : " << es.size() << '\n'
 	   << endl;
 }
 
 void FastXSeq::parseq(ifstream &ifs, string sp)
 {
-	bool hasN = false;
-	do
+	bool ignore_seq = false;
+	size_t n = 0;
+	//size_t p = ifs.tellg();
+	cout << "\t-getting header" << endl;
+	//
+	//ifs.seekg(p);
+	//cout << "position avant header : " << ifs.tellg() << endl;
+	//getline(ifs, cp );
+	//
+	//cout <<"We've found the header : " << head << endl;
+	setHeader(sp.substr(1));
+	//cout <<"So the header : " << header << endl;
+	// position du header + taille header
+	//cout << "position apres header : " << ifs.tellg() << endl;
+	setStart(ifs.tellg());
+	//
+	//
+	//
+	char c = ifs.peek();
+	sp = "";
+	ignore_seq = false;
+	while (ifs && (c != '>' || c != ';'))
 	{
-		//size_t p = ifs.tellg();
-		cout << "\t-getting header" << endl;
-		//
-		//ifs.seekg(p);
-		//cout << "position avant header : " << ifs.tellg() << endl;
-		//getline(ifs, cp );
-		//
-		//cout <<"We've found the header : " << head << endl;
-		setHeader(sp.substr(1));
-		//cout <<"So the header : " << header << endl;
-		// position du header + taille header
-		//cout << "position apres header : " << ifs.tellg() << endl;
-		setStart(ifs.tellg());
-		//
-		//
-		//
-		EncodedSeq *aes = new EncodedSeq();
-		char c = ifs.peek();
-		sp = "";
-		hasN = false;
-		while (c != '>' || c != ';')
+		getline(ifs, sp);
+		for (size_t i = 0; i < sp.size(); ++i) {
+			if (ifnucl(sp[i], true)) {
+				if (ifnucl(sp[i])) {
+					++n;
+				} else {
+					ignore_seq = true;
+				}
+			} else {
+				if (!ifspace(sp[i])) {
+					//Erreur dans la séquence à la positon i de la ligne courante
+					ignore_seq = true;
+				}
+			}
+		}
+		c = ifs.peek();
+	} // end while
+	if (!ignore_seq) {
+		es.reserve(n);
+		ifs.clear();
+		ifs.seekg(getStart());
+		c = ifs.peek();
+		while (ifs && (c != '>' || c != ';'))
 		{
 			getline(ifs, sp);
-			hasN = (hasN ? true : (sp.find('N') == std::string::npos ? false : true));
-			if (!hasN)
-			{
-				(*aes) += sp;
+			for (size_t i = 0; i < sp.size(); ++i) {
+				if (ifnucl(sp[i])) {
+					es += sp[i];
+				}
 			}
 			c = ifs.peek();
-		} // end while
-		if (aes->size() == 0 || hasN)
-		{
-			cout << "\tPas de sequence" << endl;
 		}
-	} while (hasN); // filtre anti-N
-	// (*es) = (*aes);
-	//delete aes; 
+	} else {
+		cout << "\tSéquence ignorée" << endl;
+	}
 }
 
 void FastXSeq::parseqQ(ifstream &ifs, string line)

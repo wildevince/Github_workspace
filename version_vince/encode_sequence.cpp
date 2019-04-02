@@ -36,7 +36,7 @@ EncodedSeq &EncodedSeq::operator=(const EncodedSeq &es)
         clear();
         n = es.n;
         N = getByte(n) + 1;
-        tabseq = (n ? new char[N] : NULL);
+        tabseq = ( (n != 0) ? new char[N] : NULL);
         copy(es.tabseq, es.tabseq + N, tabseq);
     }
     return *this;
@@ -44,7 +44,7 @@ EncodedSeq &EncodedSeq::operator=(const EncodedSeq &es)
 
 void EncodedSeq::clear()
 {
-    if (n)
+    if (n != 0)
     {
         delete[] tabseq;
         tabseq = NULL;
@@ -97,11 +97,6 @@ char decode(char ec)
 //corected
 char EncodedSeq::operator[](size_t i) const
 { // en comptant à partir de 1
-    if (i < n)
-    {
-        cout << "out of range" << endl;
-        throw "out of range";
-    }
     //size_t x = getByte(i+1);
     char c = tabseq[getByte(i)]; // je veux le caractere dans l'octet n° i
     c >>= ((3 - getPosInByte(i)) << 1);
@@ -129,10 +124,12 @@ void EncodedSeq::setNucleotide(size_t i, char c)
 
 char EncodedSeq::getNucleotide(size_t i) const
 {
-    size_t shift = ((3 - getPosInByte(i)) << 1);
-    char byte = tabseq[getByte(i)];
-    byte &= (3 << shift);
-    return (decode(byte));
+    if (!i || (i > n))
+    {
+        cout << "out of range" << endl;
+        throw "out of range";
+    }
+    return operator[](i);
 }
 
 size_t EncodedSeq::size() const
@@ -161,22 +158,25 @@ EncodedSeq &EncodedSeq::operator+=(char c)
 
 EncodedSeq &EncodedSeq::operator+=(const string sp)
 { // = pushback
-    size_t sp_len = sp.size();
-    reserve(n + sp_len + 1);
+    size_t sp_len = sp.size() +1 ;
     char c;
     if (sp_len > N - n)
     {
         cout << "\t\tOut of range"
              << "\n\t\tIncreasing the memory" << endl;
     }
-    for (size_t i = 0; i < sp_len; ++i)
+    reserve(n + sp_len + 1); 
+    for (size_t i = 0; i < (sp_len) ; ++i)
     {
         // check blank char !!!
-        c = tabseq[n + i + 1];
-        size_t shift = ((3 - getPosInByte(n + i + 1)) << 1);
-        c &= ~(3 << shift);
-        c |= (encode(sp[i]) << shift);
-        ++n;
+        if ( !ifspace(sp[i]) ) 
+        {
+            c = tabseq[n + i];
+            size_t shift = ((3 - getPosInByte(n + i + 1)) << 1);
+            c &= ~(3 << shift);
+            c |= (encode(sp[i]) << shift);
+            ++n;
+        }
     }
     cout << "\t\tline added" << endl;
     return *this;
