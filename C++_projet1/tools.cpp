@@ -22,3 +22,15 @@ char *myStrDup(char *s) //s = &f.fileName
     }
     return res;
 }
+bool isNucl(char n){
+  bool res=false;
+  if(n=='A'|| n=='a'
+     || n=='G'|| n=='g'
+     || n=='C'|| n=='c'
+     || n=='T'|| n=='t'
+     || n=='N' || n=='n'
+     || n=='U' || n=='u' ){
+		res=true;
+  }
+  return res;
+}
