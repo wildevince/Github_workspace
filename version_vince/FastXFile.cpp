@@ -317,6 +317,7 @@ void FastXFile::parse()
 				string s;
 				//cout << "position avant getline : " << ifs.tellg() << endl;
 				getline(ifs, s, '\n');
+				cout << "la ligne est " << s << endl;
 
 				char c = ifs.peek();
 				if (s[0] == '>' || s[0] == ';')
@@ -330,7 +331,7 @@ void FastXFile::parse()
 					//cout << "Contenu de la sequence xseq : " << endl;
 					//xseq->toStream(cout);
 					this->list_seq[this->nb_sequence++] = *xseq;
-					cout << "le char suivant : " << c << endl;
+					cout << "le char suivant : " << ifs.peek() << endl;
 					/*if (c == '>' || c == ';') {
 						this->list_seq[this->nb_sequence++].setTaille(ifs.tellg-1)
 					}*/

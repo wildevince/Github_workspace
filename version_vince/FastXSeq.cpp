@@ -107,10 +107,11 @@ void FastXSeq::setTaille(size_t t)
 void FastXSeq::toStream(ostream &os) const
 {
 	//os << "\n### coucou le stream XSeq ! ###\n" << endl;
-	os << "Header : " << (header ? header : "<no header>") << endl;
+	os << "Header : \n" << (header ? header : "<no header>") << endl;
 	os << "positiion sequence dans le fichier : " << start_seq << endl;
-	os << "taille Sequence : " << es.size() << '\n'
-	   << endl;
+	os << "taille Sequence : " << es.size() << '\n' << endl;
+	os << "La sequence :\n" << getSequence() << endl;
+	   
 }
 
 void FastXSeq::parseq(ifstream &ifs, string sp)
@@ -134,33 +135,41 @@ void FastXSeq::parseq(ifstream &ifs, string sp)
 	//
 	//
 	char c = ifs.peek();
+	//cout << "\tligne 137: Xseq controle du c " << c << endl;
 	sp = "";
 	ignore_seq = false;
-	while (ifs && (c != '>' || c != ';'))
+	while (ifs && (c != '>' && c != ';'))
 	{
+		//if ( c == '>' || c == ';' ) { break; }
+		sp = "";
 		getline(ifs, sp);
+		//cout << "\tla ligne : 143 Xseq "<< sp << endl; 
 		for (size_t i = 0; i < sp.size(); ++i) {
+			//cout <<"\t controle de sp[i]: 145 " << sp[i] << endl;
 			if (ifnucl(sp[i], true)) {
 				if (ifnucl(sp[i])) {
 					++n;
 				} else {
 					ignore_seq = true;
+					//cout<< "\t Espèce de dégénéré!!!" << endl; 
 				}
 			} else {
 				if (!ifspace(sp[i])) {
 					//Erreur dans la séquence à la positon i de la ligne courante
 					ignore_seq = true;
+					//cout << "\tBla bla et re Bla" << endl;
 				}
 			}
 		}
 		c = ifs.peek();
+		//cout << "\tcontrole du c : " << c << "	################"<< endl;
 	} // end while
 	if (!ignore_seq) {
 		es.reserve(n);
 		ifs.clear();
 		ifs.seekg(getStart());
 		c = ifs.peek();
-		while (ifs && (c != '>' || c != ';'))
+		while (ifs && (c != '>' && c != ';'))
 		{
 			getline(ifs, sp);
 			for (size_t i = 0; i < sp.size(); ++i) {

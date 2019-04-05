@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     FastXFile myfasta(s);
     myfasta.setFileName(s);
     myfasta.toStream(cout);
-    cout << myfasta[0].getSequence() << endl;
+    
     cout << "\n\nBoujour Je m'appel Lylie" << endl;
 
     return 0;

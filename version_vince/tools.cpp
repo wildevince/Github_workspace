@@ -28,7 +28,8 @@ bool ifnucl(char c, bool degenerated) {
         || (c == 'c') || (c == 'C')
         || (c == 'g') || (c == 'G')
         || (c == 't') || (c == 'T')
-        || (c == 'u') || (c == 'U'))
+        || (c == 'u') || (c == 'U')
+        || (c == 'n') || (c == 'N'))
         || (degenerated
             && ((c == 'b') || (c == 'B')
              || (c == 'd') || (c == 'D')
@@ -40,6 +41,5 @@ bool ifnucl(char c, bool degenerated) {
              || (c == 'y') || (c == 'Y')
              || (c == 'w') || (c == 'W')
              || (c == 's') || (c == 'S')
-             || (c == '-')
-             || (c == 'n') || (c == 'N'))));
+             || (c == '-'))));
 }

@@ -36,8 +36,10 @@ EncodedSeq &EncodedSeq::operator=(const EncodedSeq &es)
         clear();
         n = es.n;
         N = getByte(n) + 1;
-        tabseq = ( (n != 0) ? new char[N] : NULL);
-        copy(es.tabseq, es.tabseq + N, tabseq);
+        tabseq = ( (n) ? new char[N] : NULL);
+        reserve(es.N);
+        //copy(es.tabseq, es.tabseq + N, tabseq);
+        tabseq=myStrDup(es.tabseq);
     }
     return *this;
 }
@@ -85,6 +87,7 @@ size_t EncodedSeq::getPosInByte(size_t i)
 char encode(char c)
 {
     return (((c == 'a') || (c == 'A')) ? 0 : (((c == 'c') || (c == 'C')) ? 3 : (((c == 'g') || (c == 'G')) ? 2 : (((c == 't') || (c == 'T') || (c == 'u') || (c == 'U')) ? 1 : (rand() & 3)))));
+    
 }
 
 // a placer
