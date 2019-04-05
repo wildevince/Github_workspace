@@ -1,0 +1,81 @@
+2. Exercice prealable
+
+doc:
+UniProt RDF schema ontology  : https://www.uniprot.org/core/
+
+
+— les requˆetes qui portent sur les taxons associ ́es aux s ́equences de la base de connaissances
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+SELECT ?prot ?name ?taxon
+WHERE
+{
+		?prot a up:Protein ;
+		up:mnemonic ?name ;
+        up:organism ?taxon .
+}limit 5
+
+
+— les requˆetes qui portent sur les s ́equences humaines
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX taxon:<http://purl.uniprot.org/taxonomy/>
+SELECT ?prot ?name 
+WHERE
+{
+		?prot a up:Protein ;
+		up:mnemonic ?name ;
+        up:organism taxon:9606 .
+}limit 5
+
+
+— les requˆetes qui portent sur les annotations portant sur les s ́equences humaines
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+SELECT ?prot ?keyword
+WHERE
+{
+		?prot a up:Protein ;
+		up:classifiedWith ?keyword
+}limit 5
+
+
+— retourner le nom des g`enes associ ́es aux s ́equences prot ́eiques humaines
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX taxon:<http://purl.uniprot.org/taxonomy/>
+prefix go:<http://purl.obolibrary.org/obo/GO_>
+SELECT ?prot ?gene
+WHERE
+{
+		?prot a up:Protein ;
+                up:encodedBy ?gene
+        	
+}limit 5
+
+
+— retourner le nom des g`enes associ ́es aux s ́equences prot ́eiques humaines caract ́eris ́ees par lemot-cl ́e GO_0005488
+
+
+
+_ retourne le nom scientifique d'une espèc en particulier
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX taxon:<http://purl.uniprot.org/taxonomy/>
+SELECT ?name 
+WHERE
+{
+		taxon:9606 up:scientificName ?name
+}limit 5
+
+
+_ retourne les 5 premiers noms scientifiques des noeuds parents à l'homme
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX taxon:<http://purl.uniprot.org/taxonomy/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?father_name
+WHERE
+{
+		taxon:9606 rdfs:subClassOf ?father .
+        ?father up:scientificName ?father_name
+}limit 5

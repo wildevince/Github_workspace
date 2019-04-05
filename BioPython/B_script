@@ -1,0 +1,65 @@
+from SPARQLWrapper import SPARQLWrapper, JSON
+
+sparql = SPARQLWrapper("https://www.ebi.ac.uk/rdf/services/sparql")
+sparql.setQuery("""
+    PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/> 
+PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/> 
+PREFIX ensemblterms: <http://rdf.ebi.ac.uk/terms/ensembl/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+SELECT ?uniprot_id ?uniprot_uri ?isoform ?seq 
+WHERE {
+     ensembl:ENSG00000128573 ensemblterms:DEPENDENT ?uniprot_uri .
+     ?uniprot_uri dc:identifier ?uniprot_id .
+  
+     SERVICE <http://sparql.uniprot.org/sparql> {
+       ?uniprot_uri up:sequence ?isoform .
+       ?isoform rdf:value ?seq . 
+     } 
+}
+LIMIT 100""")
+sparql.setReturnFormat(JSON)
+results = sparql.query().convert()
+
+for result in results["results"]["bindings"]:
+    print(result)
+    #print(result["label"]["value"])
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+print('Hello')
+
+from SPARQLWrapper import SPARQLWrapper, JSON
+
+sparql = SPARQLWrapper("http://sparql.uniprot.org/sparql")
+sparql.setQuery("""
+    PREFIX up:<http://purl.uniprot.org/core/> 
+SELECT ?prot ?name ?taxon
+WHERE
+{
+		?prot a up:Protein ;
+		up:mnemonic ?name ;
+        up:organism ?taxon .
+}limit 5
+
+""")
+sparql.setReturnFormat(JSON)
+results = sparql.query().convert()
+
+#print(results)
+outFile = open("outFile.tkt", 'w' ) 
+outFile.write(results)
+outFile.close() 
+
+
+for result in results["results"]["bindings"]:
+    print(result["prot"]["value"], '\t' ,result["name"]["value"], '\t' ,result["taxon"]["value"], '\n' ,)
+print('The end') 
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
