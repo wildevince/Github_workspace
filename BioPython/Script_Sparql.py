@@ -5,11 +5,11 @@ print("Démarrage...\n")
 import pandas as pd
 import rdflib
 from rdflib import Namespace, Graph, URIRef, BNode, Literal
-from rdflib.namespace import RDF, FOAF
+from rdflib.namespace import RDFS, RDF
 import re
 
-ontology_graph_filePATH = "./bdLylie/storedOntologies.txt"
-custom_graph_filePATH = "./bdLylie/storedGraph.txt"
+ontology_graph_filePATH = "./bdLylie/storedOntologies.n3"
+custom_graph_filePATH = "./bdLylie/storedGraph.n3"
 
 def returnURIRef(value, dico) :
     found = False
@@ -71,17 +71,18 @@ else :
                 if (result) :
                     #thesaurus[result.group(1)] = result.group(2)    #origial
                     thesaurus[result.group(1)] = [result.group(2),result.group(3)]
-                    custom_graph.add( (Prefix[result.group(2)][result.group(3)], FOAF.name, Literal(result.group(1)) ))
+                    custom_graph.add( (Prefix[result.group(2)][result.group(3)], RDFS.label , Literal(result.group(1)) ))
                     #custom_graph.predicates(subject=result.group(1), object=result.group(2))
                 else : 
                     print("terme ontologique illisible\t:\t", line)
                     check = False
+    OFile.seek(0) #reset le lecture
     for line in OFile :
         if (line[0] == "!") :
             result = re.search("^[!]([^,\s]+)[,\s]+([^,\s]+)[,\s]+([^,\s]+)[,\s]+([^,\s]+)$",line)
             #print(result)
             if (result) :
-                custom_graph.add( ( Prefix[result.group(1)][result.group(2)], RDF.subClassOf ,Prefix[result.group(3)][result.group(4)] ) )
+                custom_graph.add( ( Prefix[result.group(1)][result.group(2)], RDFS.subClassOf ,Prefix[result.group(3)][result.group(4)] ) )
             else : 
                 print("triplet illisible\t:\t", line)
                 check = False
@@ -90,7 +91,7 @@ else :
                 result = re.search("^[=]([^,\s]+)[,\s]+([^,\s]+)[,\s]+([^,\s]+)[,\s]+([^,\s]+)$",line)
                 #print(result)
                 if (result) :
-                    custom_graph.add( ( Prefix[result.group(1)][result.group(2)], RDF.subClassOf ,Prefix[result.group(3)][result.group(4)] ) )
+                    custom_graph.add( ( Prefix[result.group(1)][result.group(2)], RDFS.label ,Prefix[result.group(3)][result.group(4)] ) )
                 else : 
                     print("triplet illisible\t:\t", line)
                     check = False
@@ -100,7 +101,8 @@ else :
         print("erreur format\n\t(vérifier les espaces ^^)")
         exit(1)
     print("Sauvegarde graph ontologie\n\n")
-    custom_graph.serialize( destination= "./bdLylie/storedGraph.txt", format= 'n3')
+    custom_graph.serialize( destination= custom_graph_filePATH, format= 'n3')
+    custom_graph.serialize( destination= ontology_graph_filePATH, format= 'n3')
     OFile.close()
 #
 #print(Prefix)
@@ -142,7 +144,8 @@ else :
     Nodes = {}
     for Id in csv["Id"] :
         Nodes[Id] = Literal(Id)
-        custom_graph.add(( Nodes[Id], RDF.type, Prefix["NCBITaxon"]["NCBITaxon_3702"]) )
+        custom_graph.add(( Nodes[Id], RDF.type, Prefix["EXP"]["Id"]) )
+    custom_graph.add(( Prefix["EXP"]["Id"], RDF.type, Prefix["NCBITaxon"]["NCBITaxon_3702"]) )
     #
     for col in csv :
         if (col == 'Id' ):
@@ -165,8 +168,44 @@ else :
 
     print("Sauvegarde...")
 
-    custom_graph.serialize( destination= "./bdLylie/storedGraph.txt", format= 'n3')
+    custom_graph.serialize( destination= custom_graph_filePATH, format= 'n3')
     #custom_graph.serialize( destination= "./bdLylie/storedGraph.txt", format= 'n3')
+geronimo = True
+while(geronimo) :
+	print("\n\nVoulez-vous requeter ce graph ?\n")
+	ans=input("\nyes(défaut)\tno\t:\t")
+	if(ans=="no"):
+		geronimo = False
+		break
+	else :
+		print('\n'*100)
+		print("\n\nOVERIDE\nla requete est en dure !")
+		#requete = input("\n((Attention : appuyez sur entrer seulement pour mettre fin à la requète)):\n")
+        #Quels sont les 10 premiers échantillons dans le milieu_1 ? (expecting 149 ~= rows) LIMITE 10 !
+		DURE = """
+        PREFIX EXP: <https://exemple/HMSN204/TP4/FRSW/> 
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+        SELECT ?id 
+        WHERE{ 
+            ?id a EXP:Id ; 
+                EXP:Milieu "milieu_1"
+            }limit 10
+        """
+		#result = custom_graph.query(requete)
+		#print(custom_graph.query(DURE))
+		result = custom_graph.query(DURE)
+		resFile = open("./bdLylie/out.txt", 'w')
+		resFile.write(result.serialize(format="xml"))
+		resFile.close() 
+		newg = Graph().parse(data=result)
+		print(newg.serialize(format="n3"))
+		#print(result)
+		#for triplet in result:
+		#	print(triplet)
+			
 print("\n\nNous avons terminé !\nEn vous remerciant\n\n")
 #fin
 #csv
+
+
+

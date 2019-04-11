@@ -6,100 +6,99 @@
 ;NCBITaxon http://purl.obolibrary.org/obo/
 
 ##terme BD##
-Id NCBITaxon NCBITaxon_3702
-Genotype EXP EXP_002
-Milieu EXP EXP_003
-Plate EXP EXP_004
-Grouping EXP EXP_009
-Phenotype EXP EXP_000
-ConditionExp EXP EXP_999
+Id EXP Id
+Genotype EXP Genotype
+Milieu EXP Milieu
+Plate EXP Plate
+Grouping EXP Grouping
+Phenotype EXP Phenotype
+ConditionExp EXP ConditionExp
 ##C°EXP##
-!EXP EXP_003 EXP EXP_999
-!EXP EXP_004 EXP EXP_999
-!EXP EXP_009 EXP EXP_999
-##phenotype##
-!EXP EXP_005 EXP EXP_000
-!FLOPO FLOPO_0020876 EXP EXP_000
-!EXP EXP_007 EXP EXP_000
-!EXP EXP_008 EXP EXP_000
-!EXP EXP_011 EXP EXP_000
-!EXP EXP_012 EXP EXP_000
-!TO  TO_0000495 EXP EXP_000
+!EXP Id NCBITaxon NCBITaxon_3702
+!EXP Milieu EXP ConditionExp
+!EXP Plate EXP ConditionExp
+!EXP Grouping EXP ConditionExp
+##Phenotype##
+!EXP PR_length EXP Phenotype
+!FLOPO FLOPO_0020876 EXP Phenotype
+!EXP RootArea EXP Phenotype
+!EXP LR_length EXP Phenotype
+!EXP distanceFromHypocotyl EXP Phenotype
+!EXP ShootArea EXP Phenotype
+!TO  TO_0000495 EXP Phenotype
 
 ##terme BD##
-PR_length EXP EXP_005
+PR_length EXP PR_length
 ##termes Onto##	
 primary_root PO	PO_0020127
-primary_root_phenotype FLOPO FLOPO_0016173
+primary_root_Phenotype FLOPO FLOPO_0016173
 root_length FLOPO FLOPO_0009325
 ##relation BD-Onto##		
-!EXP EXP_005	PO PO_0020127
-!EXP EXP_005	FLOPO FLOPO_0016173
-=EXP EXP_005	FLOPO FLOPO_0009325
+!EXP PR_length	PO PO_0020127
+!EXP PR_length	FLOPO FLOPO_0016173
+=EXP PR_length	FLOPO FLOPO_0009325
 
 ##Tortuosity##				
 ##terme BD : 
 ##Tortuosity  EXP EXP_006
-Tortuosity FLOPO LOPO_0020876
+Tortuosity FLOPO FLOPO_0020876
 ##termes Onto##
-root_phenotype FLOPO LOPO_0000039
+root_Phenotype FLOPO FLOPO_0000039
 root PO	PO_0009005
 ##relation BD-Onto##				
 !FLOPO FLOPO_0020876 PO PO_0009005
 !FLOPO FLOPO_0020876 FLOPO FLOPO_0000039
 
 ##terme BD##
-RootArea EXP EXP_007
+RootArea EXP RootArea
 ##termes Onto##					
-lateral_root_phenotype FLOPO LOPO_0022504
+lateral_root_Phenotype FLOPO FLOPO_0022504
 root PO	PO_0009005
 area PATO PATO_0001323
 ##relation BD-Onto##		
-=EXP EXP_007	PATO PATO_0001323
-!EXP EXP_007 PO PO_0009005
-!EXP EXP_007	FLOPO FLOPO_0022504
+=EXP RootArea	PATO PATO_0001323
+!EXP RootArea PO PO_0009005
+!EXP RootArea	FLOPO FLOPO_0022504
 
 ##terme BD##
-LR_length EXP EXP_008
+LR_length EXP LR_length
 ##termes Onto##		
-lateral_root_phenotype	FLOPO LOPO_0022504
+lateral_root_Phenotype	FLOPO FLOPO_0022504
 lateral_root	PO	PO_0020121
-root_length	FLOPO LOPO_0009325
+root_length	FLOPO FLOPO_0009325
 ##relation BD-Onto##
-=EXP EXP_008	FLOPO FLOPO_0009325
-!EXP EXP_008 PO PO_0020121
-!EXP EXP_008	FLOPO FLOPO_0022504
+=EXP LR_length	FLOPO FLOPO_0009325
+!EXP LR_length PO PO_0020121
+!EXP LR_length	FLOPO FLOPO_0022504
 
 ##terme BD##
-distanceFromHypocotyl EXP EXP_011
+distanceFromHypocotyl EXP distanceFromHypocotyl
 ##termes Onto##				
-root_phenotype	FLOPO LOPO_0000039
+root_Phenotype	FLOPO FLOPO_0000039
 root	PO	PO_0009005
 distance PATO PATO_0000040
 hypocotyl	PO	PO_0020100
 ##relation BD-Onto##
-=EXP EXP_011	PATO PATO_0000040
-!EXP EXP_011 PO PO_0009005
-!EXP EXP_011 PO PO_0020100
-!EXP EXP_011	FLOPO FLOPO_0000039
+=EXP distanceFromHypocotyl	PATO PATO_0000040
+!EXP distanceFromHypocotyl PO PO_0009005
+!EXP distanceFromHypocotyl PO PO_0020100
+!EXP distanceFromHypocotyl	FLOPO FLOPO_0000039
 
 ##terme BD##
-ShootArea	EXP EXP_012
+ShootArea	EXP ShootArea
 ##termes Onto##				
-shoot_system_phenotype FLOPO LOPO_0001313
+shoot_system_Phenotype FLOPO FLOPO_0001313
 shoot_system PO	PO_0009006
 area PATO PATO_0001323
 ##relation BD-Onto##
-=EXP EXP_012 PATO PATO_0001323
-!EXP EXP_012 PO PO_0009006
-!EXP EXP_012 FLOPO FLOPO_0001313
+=EXP ShootArea PATO PATO_0001323
+!EXP ShootArea PO PO_0009006
+!EXP ShootArea FLOPO FLOPO_0001313
 
 ##Chlorophyll##
 ##terme BD : EXP EXP_013	Chlorophyll##
-leaf_phenotype	FLOPO LOPO_0000004
 ##termes Onto##	
 leaf	PO	PO_0025034
 Chlorophyll	TO TO_0000495
 ##relation BD-Onto##
-!FLOPO FLOPO_0000004 PO PO_0025034
-=FLOPO FLOPO_0000004 TO TO_0000495
+!TO TO_0000495 PO PO_0025034
